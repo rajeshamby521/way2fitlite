@@ -1,0 +1,15 @@
+const String bg_bmi_calculate = "assets/images/bg_bmi_calculate.png";
+const String bg_bmr = "assets/images/bg_bmr.png";
+const String bg_bmr_bmi = "assets/images/bg_bmr_bmi.png";
+const String bg_bmr_curv = "assets/images/bg_bmr_curv.png";
+const String bg_food_avoid = "assets/images/bg_food_avoid.jpg";
+const String bg_food_eat = "assets/images/bg_food_eat.jpg";
+const String bg_bmi_screen = "assets/images/bg_bmi_screen.jpg";
+const String bg_home_screen = "assets/images/bg_home_screen.png";
+const String logo_home_screen = "assets/images/logo_home_screen.png";
+const String bg_home_screen2 = "assets/images/bg_home_screen2.png";
+const String bg_login = "assets/images/bg_login.png";
+const String logo_left_side = "assets/images/logo_left_side.png";
+const String logo_right_side = "assets/images/logo_right_side.png";
+// const String splash = "assets/images/splash.png";
+const String appLogo = "assets/images/way_2_fit_life.png";
