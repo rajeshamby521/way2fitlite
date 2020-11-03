@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
@@ -5,8 +7,6 @@ import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food
 import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food_directory/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food_directory/presentation/widget/rich_food_widget.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RichFoodScreen extends StatefulWidget {
   String foodType;
@@ -27,7 +27,8 @@ class _RichFoodScreenState extends State<RichFoodScreen> {
 
   @override
   void initState() {
-    bloc.add(FetchRichFoodDataEvent(offSet: "0", categoryId: widget.categoryId));
+    bloc.add(
+        FetchRichFoodDataEvent(offSet: "0", categoryId: widget.categoryId));
     super.initState();
   }
 
@@ -49,7 +50,10 @@ class _RichFoodScreenState extends State<RichFoodScreen> {
                 backgroundColor: headerColor,
                 title: labels(text: widget.foodType),
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back_rounded,color: white,),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: white,
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -72,7 +76,8 @@ class _RichFoodScreenState extends State<RichFoodScreen> {
                         //   ),
                         // ),
                       ),
-                      separatorBuilder: (context, index) => listDivider(padding: 10),
+                      separatorBuilder: (context, index) =>
+                          listDivider(padding: 10),
                     ),
             ),
           );

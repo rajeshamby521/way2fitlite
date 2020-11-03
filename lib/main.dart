@@ -1,8 +1,13 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
+
 import 'package:device_info/device_info.dart';
-import 'package:way2fitlife/features/drawer/presentation/pages/drawer_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/dashboard/presentation/pages/dashboard_screen.dart';
+import 'package:way2fitlife/features/drawer/presentation/pages/drawer_screen.dart';
 import 'package:way2fitlife/features/home/presentation/widget/home_widget.dart';
 import 'package:way2fitlife/features/login/data/datamodel/login_model.dart';
 import 'package:way2fitlife/features/login/presentation/pages/login_screen.dart';
@@ -12,12 +17,8 @@ import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/app_preference.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'features/drawer/presentation/bloc/bloc.dart';
 
-import 'dart:io' show Platform;
+import 'features/drawer/presentation/bloc/bloc.dart';
 
 Future<String> _getToken() async {
   var deviceInfo = DeviceInfoPlugin();
@@ -30,7 +31,7 @@ Future<String> _getToken() async {
   }
 }
 
-String userId = "";
+String userId = '';
 
 setUpAll() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +68,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     if (AppPreference.getString(userData) != null) {
-      userDetails = UserData.fromMap(jsonDecode(AppPreference.getString(userData)));
+      userDetails =
+          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
     super.initState();
   }
@@ -80,6 +82,10 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
 
+    if (AppPreference.getString(userData) != null) {
+      userDetails =
+          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+    }
     // bloc.add(FetchSelectPageEvent(pageNo: 0));
     return Scaffold(
       backgroundColor: home_background,

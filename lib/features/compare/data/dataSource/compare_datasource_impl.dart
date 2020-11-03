@@ -21,7 +21,9 @@ class CompareDataSourceImpl extends CompareDataSource {
     map[lang] = "0";
     map[offset] = offSet.toString();
 
-    var response = await _dio.post(getComparePhotoListURL, data: FormData.fromMap(map));
+    var response =
+        await _dio.post(getComparePhotoListURL, data: FormData.fromMap(map));
+    print('getCAompare photo--->${response.data}');
     data = ComparePhotoDataModel.fromMap(response.data);
     return data;
   }
@@ -31,7 +33,8 @@ class CompareDataSourceImpl extends CompareDataSource {
       DateModel(dateTime: dateTime, pic: pic);
 
   @override
-  Future<ImageModel> getPhoto({File image, int pic}) async => ImageModel(image: image, pic: pic);
+  Future<ImageModel> getPhoto({File image, int pic}) async =>
+      ImageModel(image: image, pic: pic);
 
   @override
   Future<WeightModel> getWeight({double weight, int pic}) async =>
@@ -56,11 +59,16 @@ class CompareDataSourceImpl extends CompareDataSource {
     map[after_date] = afterDate;
 
     String fileName1 = beforePhoto.path.split('/').last;
-    map[user_before_photo] = await MultipartFile.fromFile(beforePhoto.path, filename: fileName1);
+    map[user_before_photo] =
+        await MultipartFile.fromFile(beforePhoto.path, filename: fileName1);
     String fileName2 = afterPhoto.path.split('/').last;
-    map[user_after_photo] = await MultipartFile.fromFile(beforePhoto.path, filename: fileName2);
+    map[user_after_photo] =
+        await MultipartFile.fromFile(beforePhoto.path, filename: fileName2);
 
-    var response = await _dio.post(SetComparePhotoDataURL, data: FormData.fromMap(map));
+    var response =
+        await _dio.post(SetComparePhotoDataURL, data: FormData.fromMap(map));
+
+    print('set userphoto->>${response.data}');
     setData = SetComparePhotoDataModel.fromMap(response.data);
     return setData;
   }

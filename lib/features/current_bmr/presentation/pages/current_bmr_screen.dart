@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/appbar_widget.dart';
 import 'package:way2fitlife/common/general/gender_widget.dart';
 import 'package:way2fitlife/common/general_widget.dart';
@@ -8,11 +11,7 @@ import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:way2fitlife/ui_helper/text_style.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CurrentBMRScreen extends StatefulWidget {
   final Bloc bloc;
@@ -55,7 +54,7 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
               appBar: appbar(
                 bloc: widget.bloc,
                 title: bmr,
-                bottomInfo: bottomSheet,
+                bottomInfo: bottomSheetBmr,
                 context: context,
               ),
               body: Container(
@@ -85,7 +84,8 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
+                              borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(50)),
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
@@ -119,8 +119,8 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                                         startValue: 10,
                                         endValue: 150,
                                         initialItem: 50,
-                                        onItemChanged: (val) =>
-                                            weightKg = double.parse((val + 10).toString()),
+                                        onItemChanged: (val) => weightKg =
+                                            double.parse((val + 10).toString()),
                                       ),
                                     ),
                                     Expanded(
@@ -130,8 +130,8 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                                         startValue: 50,
                                         endValue: 200,
                                         initialItem: 100,
-                                        onItemChanged: (val) =>
-                                            heightCm = double.parse((val + 50).toString()),
+                                        onItemChanged: (val) => heightCm =
+                                            double.parse((val + 50).toString()),
                                       ),
                                     ),
                                   ],
@@ -144,19 +144,22 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                                     startValue: 10,
                                     endValue: 100,
                                     initialItem: 15,
-                                    onItemChanged: (val) =>
-                                        ageYear = double.parse((val + 10).toString()),
+                                    onItemChanged: (val) => ageYear =
+                                        double.parse((val + 10).toString()),
                                   ),
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     genderImage(image: ic_boy, gender: gender),
                                     genderSelection(
                                       value: gender,
-                                      onChanged: (val) => bloc.add(SelectGenderEvent(gender: val)),
+                                      onChanged: (val) => bloc
+                                          .add(SelectGenderEvent(gender: val)),
                                     ),
-                                    genderImage(image: ic_girl, gender: !gender),
+                                    genderImage(
+                                        image: ic_girl, gender: !gender),
                                   ],
                                 ),
                                 verticalSpace(Scr.screenHeight * 0.02),
@@ -302,7 +305,10 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                         verticalSpace(height * 0.01),
                         divider(color: lightTheme, thickness: 2),
                         activityLabel(selectActivityLevel),
-                        ActivityLevel(bloc: bloc, bmr: bmrAns, activityLevelMode: activityMode),
+                        ActivityLevel(
+                            bloc: bloc,
+                            bmr: bmrAns,
+                            activityLevelMode: activityMode),
                         Row(
                           children: [
                             activityLabel(dailyIntake),
@@ -322,7 +328,7 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
     );
   }
 
-  show(context) => showBottomSheet(
+  /*show(context) => showBottomSheet(
       context: context,
       builder: (context) {
         return Container(
@@ -339,5 +345,5 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
             ),
           ),
         );
-      });
+      });*/
 }

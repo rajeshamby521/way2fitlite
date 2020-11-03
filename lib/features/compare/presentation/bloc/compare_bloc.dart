@@ -1,6 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/features/compare/domain/usecase/compare_usecase.dart';
 import 'package:way2fitlife/features/compare/presentation/bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CompareBloc extends Bloc<CompareEvent, CompareState> {
   GetCompareDataUseCase getCompareDataUseCase;
@@ -19,9 +19,11 @@ class CompareBloc extends Bloc<CompareEvent, CompareState> {
 
   @override
   Stream<CompareState> mapEventToState(CompareEvent event) async* {
+    //list with pagination
     if (event is GetComparePhotoDataEvent) {
       yield LoadingBeginHomeState();
-      final result = await getCompareDataUseCase(GetCompareDataParmas(offSet: event.offSet));
+      final result = await getCompareDataUseCase(
+          GetCompareDataParmas(offSet: event.offSet));
       yield LoadingEndHomeState();
       yield result.fold(
         (error) => ErrorState(error.message),
@@ -30,7 +32,8 @@ class CompareBloc extends Bloc<CompareEvent, CompareState> {
     }
     if (event is GetComparePhotoNextPageDataEvent) {
       yield LoadingBeginNextPageState();
-      final result = await getCompareDataUseCase(GetCompareDataParmas(offSet: event.offSet));
+      final result = await getCompareDataUseCase(
+          GetCompareDataParmas(offSet: event.offSet));
       yield LoadingEndNextPageState();
       yield result.fold(
         (error) => ErrorState(error.message),
@@ -38,6 +41,7 @@ class CompareBloc extends Bloc<CompareEvent, CompareState> {
       );
     }
 
+    //set comparedata
     if (event is SetCompareDataEvent) {
       final result = await setCompareDataUseCase(SetCompareDataParams(
         beforeImage: event.beforeImage,
@@ -53,6 +57,7 @@ class CompareBloc extends Bloc<CompareEvent, CompareState> {
       );
     }
 
+    //get compare photo
     if (event is GetComparePhotoEvent) {
       yield LoadingBeginHomeState();
       final result = await photoUseCase(CompareImageParams(
@@ -65,6 +70,7 @@ class CompareBloc extends Bloc<CompareEvent, CompareState> {
         (success) => GetComparePhotoState(imageModel: success),
       );
     }
+    //get compare weight
     if (event is GetCompareWeightEvent) {
       yield LoadingBeginHomeState();
       final result = await weightUseCase(CompareWeightParams(
@@ -77,6 +83,7 @@ class CompareBloc extends Bloc<CompareEvent, CompareState> {
         (success) => GetCompareWeightState(weightModel: success),
       );
     }
+    //get compare date
     if (event is GetCompareDateEvent) {
       yield LoadingBeginHomeState();
       final result = await dateUseCase(CompareDateParams(

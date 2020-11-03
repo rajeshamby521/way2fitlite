@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/field_and_label.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
@@ -8,8 +10,6 @@ import 'package:way2fitlife/features/current_bmi/presentation/widget/meter_build
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/general/appbar_widget.dart';
 import '../../../../common/general_widget.dart';
@@ -60,7 +60,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
       appBar: appbar(
         bloc: widget.bloc,
         title: bmi,
-        bottomInfo: bottomSheet,
+        bottomInfo: bottomSheetBmi,
         context: context,
       ),
       body: Container(
@@ -73,7 +73,8 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
           cubit: bloc,
           listener: (context, state) {
             if (state is BmiErrorState) {
-              Scaffold.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+              Scaffold.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.msg)));
             } else if (state is BmiInitialState) {
               buildwidget(state.bmiDataModel, state.enabel);
             } else if (state is BmiDataState) {
@@ -156,8 +157,11 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                 hint: "Weight",
                 enabled: true,
                 inputType: TextInputType.number,
-                autoFocus: true,
+                autoFocus: false,
                 controller: weightController,
+                inputAction: TextInputAction.next,
+                focusNode: weightFocus,
+                nextFocusNode: heightFocus,
                 onChanged: (value) {
                   weight = value;
 
@@ -169,9 +173,11 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
               FieldAndLabel(
                 hint: "Height",
                 controller: heightController,
-                autoFocus: true,
+                autoFocus: false,
                 inputType: TextInputType.number,
                 enabled: true,
+                focusNode: heightFocus,
+                nextFocusNode: null,
                 onChanged: (value) {
                   height = value;
                   height != "" && weight != ""
@@ -277,7 +283,8 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: MeterBuilder(cat: overWeight, val: overWeightRange)),
+                Expanded(
+                    child: MeterBuilder(cat: overWeight, val: overWeightRange)),
                 Container(
                   child: 25.0 < model
                       ? model < 29.9
@@ -309,7 +316,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
               children: [
                 Expanded(child: MeterBuilder(cat: obeses, val: obesesRange)),
                 Container(
-                  child: model > 30.0
+                  child: model >= 30.0
                       ? CustomPaint(
                           size: Size(10, 10),
                           painter: DrawTrilangeShape(),
@@ -350,11 +357,15 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                   children: [
                     Text(
                       bmi,
-                      style: TextStyle(color: theme, fontSize: 15, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: theme,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       _bmr.toString().isNotEmpty ? _bmr.toString() : "0.0",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     listDivider(padding: 40),
                     Text(
@@ -375,6 +386,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
             ],
           ),
         ),
+        verticalSpace(20.0),
         Center(
           child: Text(
             0.1 < _bmr
@@ -386,7 +398,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                             ? overWeightMsg
                             : obeseMsg
                 : ' ',
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(fontSize: 18),
           ),
         )
       ],

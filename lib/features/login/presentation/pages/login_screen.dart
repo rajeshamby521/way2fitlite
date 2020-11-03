@@ -1,16 +1,20 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/home/presentation/widget/home_widget.dart';
 import 'package:way2fitlife/features/login/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/features/login/presentation/widget/login_widget.dart';
+import 'package:way2fitlife/features/register_page/presentation/pages/register.dart';
 import 'package:way2fitlife/main.dart';
+import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
+import 'package:way2fitlife/ui_helper/text_style.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class LogInScreen extends StatelessWidget {
   Bloc bloc = getIt<LogInBloc>();
@@ -60,14 +64,37 @@ class LogInScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         skipButton(context),
-                        Container(height: Scr.screenHeight * 0.25, child: animatorLogo()),
+                        Container(
+                            height: Scr.screenHeight * 0.25,
+                            child: animatorLogo()),
                         LogInCard(
                           context,
                           bloc: bloc,
                           buttonStatus: buttonStatus,
                           emailMsg: emailMsg,
                           passMsg: passMsg,
-                        )
+                        ),
+                        Align(
+                          child: RichText(
+                            text: TextSpan(
+                                text: "Don't Have Account?   ",
+                                children: [
+                                  TextSpan(
+                                      text: "Register",
+                                      style: defaultHomeTextStyle(
+                                          color: headerColor, size: 18),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Register(),
+                                              ));
+                                        }),
+                                ]),
+                          ),
+                        ),
                       ],
                     ),
                     if (isLoading) screenProgressIndicator

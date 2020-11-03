@@ -1,8 +1,12 @@
+// To parse this JSON data, do
+//
+//     final logInModel = logInModelFromJson(jsonString);
+
 import 'dart:convert';
 
-LogInModel logInModelFromMap(String str) => LogInModel.fromJson(json.decode(str));
+LogInModel logInModelFromJson(str) => LogInModel.fromJson(str);
 
-String logInModelToMap(LogInModel data) => json.encode(data.toMap());
+String logInModelToJson(LogInModel data) => json.encode(data.toJson());
 
 class LogInModel {
   LogInModel({
@@ -15,16 +19,16 @@ class LogInModel {
   String msg;
   UserData data;
 
-  factory LogInModel.fromJson(dynamic json) => LogInModel(
+  factory LogInModel.fromJson(Map<String, dynamic> json) => LogInModel(
         flag: json["flag"] == null ? null : json["flag"],
         msg: json["msg"] == null ? null : json["msg"],
-        data: json["data"] == null ? null : UserData.fromMap(json["data"]),
+        data: json["data"] == null ? null : UserData.fromJson(json["data"]),
       );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         "flag": flag == null ? null : flag,
         "msg": msg == null ? null : msg,
-        "data": data == null ? null : data.toMap(),
+        "data": data == null ? null : data.toJson(),
       };
 }
 
@@ -61,24 +65,32 @@ class UserData {
   String profileImage;
   String accessToken;
 
-  factory UserData.fromMap(Map<String, dynamic> json) => UserData(
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         userId: json["user_id"] == null ? null : json["user_id"],
         username: json["username"] == null ? null : json["username"],
         email: json["email"] == null ? null : json["email"],
         gender: json["gender"] == null ? null : json["gender"],
         height: json["height"] == null ? null : json["height"],
         weight: json["weight"] == null ? null : json["weight"],
-        birthdate: json["birthdate"] == null ? null : DateTime.parse(json["birthdate"]),
+        birthdate: json["birthdate"] == null
+            ? null
+            : DateTime.parse(json["birthdate"]),
         mobile: json["mobile"] == null ? null : json["mobile"],
-        activityType: json["activity_type"] == null ? null : json["activity_type"],
-        dateAdded: json["date_added"] == null ? null : DateTime.parse(json["date_added"]),
-        dateModified: json["date_modified"] == null ? null : DateTime.parse(json["date_modified"]),
+        activityType:
+            json["activity_type"] == null ? null : json["activity_type"],
+        dateAdded: json["date_added"] == null
+            ? null
+            : DateTime.parse(json["date_added"]),
+        dateModified: json["date_modified"] == null
+            ? null
+            : DateTime.parse(json["date_modified"]),
         isFlag: json["is_flag"] == null ? null : json["is_flag"],
-        profileImage: json["profile_image"] == null ? null : json["profile_image"],
+        profileImage:
+            json["profile_image"] == null ? null : json["profile_image"],
         accessToken: json["access_token"] == null ? null : json["access_token"],
       );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         "user_id": userId == null ? null : userId,
         "username": username == null ? null : username,
         "email": email == null ? null : email,
@@ -91,7 +103,8 @@ class UserData {
         "mobile": mobile == null ? null : mobile,
         "activity_type": activityType == null ? null : activityType,
         "date_added": dateAdded == null ? null : dateAdded.toIso8601String(),
-        "date_modified": dateModified == null ? null : dateModified.toIso8601String(),
+        "date_modified":
+            dateModified == null ? null : dateModified.toIso8601String(),
         "is_flag": isFlag == null ? null : isFlag,
         "profile_image": profileImage == null ? null : profileImage,
         "access_token": accessToken == null ? null : accessToken,

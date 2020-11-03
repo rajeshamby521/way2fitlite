@@ -17,6 +17,8 @@ const String share_app = "Share App";
 const String logout = "Log Out";
 const String bmr = "BMR";
 const String bmi = "BMI";
+//new
+const String updateData = "Update User Data";
 const String weightSheet = "Weight Sheet";
 const String age_year = "Age : ";
 const String year = "Year";
@@ -49,11 +51,17 @@ const String weightGain = "Weight Gain";
 const String maintain = "Maintain";
 const String checkInfo = "Check Info";
 const String whatIsBMR = "What is BMR?";
-const String bottomSheet =
+const String bottomSheetBmr =
     "BMI (body mass index) is a calculated number representing a perBMI (body mass index) is a "
     "calculated number representing a person\'s level of fat or obesity level. According to the "
     "Centers for Disease Control and Prevention (CDC), a BMI of 30 or above indicates obesity. "
     "BMI levels are broken down by weight range and are as follows:";
+//new
+const String bottomSheetBmi =
+    "Body Mass Index is a simple calculation using a person's height and weight. The"
+    "formula is BMI = kg/m2 where kg is a person's weight in kilograms and m2 is their"
+    "height in metres squared. A BMI of 25.0 or more is overweight, while the healthy range"
+    "is 18.5 to 24.9.";
 
 const String photoGallery = "Photo Gallery";
 const String addPhoto = "Add Photo";
@@ -113,8 +121,22 @@ const String normalRange = "18.5-24.9";
 const String overWeight = "OverWeight";
 const String overWeightRange = "25.0-29.9";
 const String obeses = "obeese";
-const String obesesRange = ">30";
+const String obesesRange = ">=30";
 const String underWeightMsg = 'You need to gain weight';
 const String normalMsg = 'You have perfect weight';
 const String overWeightMsg = 'You need to to loose weight';
 const String obeseMsg = 'You must lose weigth to have health life';
+
+const String register = "Register";
+const String cpasswordPasswordNotMatch =
+    "Confirm Password and Password are not matched";
+const String passwordAreSame = 'New Password must be different';
+const String passwordAreNotSame = "New Password shouldn't be different";
+const String changePassword = "Change Password";
+const String passlenthMsg = "length must be more than 6";
+const String Forum = "Forum";
+const String addForumTxt = "Add Forum";
+const String addCommentTxt = "Add Comment";
+const String addFeedBack = "Add FeedBack";
+const String forgotPasswordTxt = "Forgot Password";
+const String enter_email = "Enter email";

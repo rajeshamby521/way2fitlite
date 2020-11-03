@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
 import 'package:way2fitlife/common/general_widget.dart';
@@ -6,8 +8,6 @@ import 'package:way2fitlife/features/weight_sheet/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget weightSheetListItem({String dateTime, List<WeightDatum> weightList}) {
   return Padding(
@@ -88,8 +88,8 @@ class AddWeightData extends StatelessWidget {
               InkWell(
                 child: decoratedContainer(
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: width * 0.08, vertical: height * 0.01),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.08, vertical: height * 0.01),
                     child: labels(
                       text: dateFormat(dateTime: dateTime),
                       color: theme,
@@ -101,10 +101,11 @@ class AddWeightData extends StatelessWidget {
                   showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2010),
-                    lastDate: DateTime(2050),
+                    firstDate: DateTime(1980, 1),
+                    lastDate: DateTime.now(),
                   ).then((value) {
-                    bloc.add(GetDateEvent(dateTime: value));
+                    bloc.add(GetDateEvent(
+                        dateTime: value == null ? DateTime.now() : value));
                   });
                 },
               ),
@@ -116,7 +117,8 @@ class AddWeightData extends StatelessWidget {
                 endValue: 150,
                 initialItem: 50,
                 onItemChanged: (val) {
-                  bloc.add(GetWeightEvent(weight: double.parse((val + 10).toString())));
+                  bloc.add(GetWeightEvent(
+                      weight: double.parse((val + 10).toString())));
                 },
               ),
               verticalSpace(height * 0.01),
@@ -126,7 +128,8 @@ class AddWeightData extends StatelessWidget {
                 disable: false,
                 onPressed: () {
                   bloc.add(SetWeightSheetEvent(
-                      date: dateTime.toString(), weight: weight.toString() ?? "60"));
+                      date: dateTime.toString(),
+                      weight: weight.toString() ?? "60"));
                   Navigator.pop(context);
                 },
               ),

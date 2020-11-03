@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:way2fitlife/common/general/appbar_widget.dart';
 import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
@@ -10,10 +14,6 @@ import 'package:way2fitlife/features/photo_gallery/presentation/widget/photo_gal
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 
 class PhotoGalleryScreen extends StatefulWidget {
   Bloc bloc;
@@ -46,7 +46,8 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
     return BlocListener(
       cubit: bloc,
       listener: (BuildContext context, state) {
-        if (state is GetPhotoGalleryDataState || state is GetPhotoGalleryNextPageDataState) {
+        if (state is GetPhotoGalleryDataState ||
+            state is GetPhotoGalleryNextPageDataState) {
           list = state.data;
           photoList.addAll(state.data.data);
         }
@@ -60,8 +61,8 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
           setPhotoGalleryData = state.data;
           String img = setPhotoGalleryData.data.userPhoto;
           String weight = setPhotoGalleryData.data.weight;
-          DateTime date =
-              DateFormat('yyyy-M-d', 'en_US').parse(setPhotoGalleryData.data.date.toString());
+          DateTime date = DateFormat('yyyy-M-d', 'en_US')
+              .parse(setPhotoGalleryData.data.date.toString());
           photoList.insert(
             0,
             Datum(
@@ -80,7 +81,8 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
         cubit: bloc,
         builder: (BuildContext context, state) {
           return Scaffold(
-            appBar: appbar(bloc: widget.bloc, context: context, title: photoGallery),
+            appBar: appbar(
+                bloc: widget.bloc, context: context, title: photoGallery),
             floatingActionButton: extendedFloatingButton(
               context: context,
               bloc: bloc,
@@ -94,13 +96,16 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
               child: Container(
                 decoration: boxDecoration(
                   image: bg_home_screen,
-                  colorFilter: ColorFilter.mode(black.withOpacity(0.8), BlendMode.dstATop),
+                  colorFilter: ColorFilter.mode(
+                      black.withOpacity(0.8), BlendMode.dstATop),
                 ),
-                child: isLoading ? circularProgressIndicator : _createListView(),
+                child:
+                    isLoading ? circularProgressIndicator : _createListView(),
               ),
             ),
-            bottomSheet:
-                isPageLoading ? Container(height: 40, child: circularProgressIndicator) : null,
+            bottomSheet: isPageLoading
+                ? Container(height: 40, child: circularProgressIndicator)
+                : null,
           );
         },
       ),
@@ -110,7 +115,8 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
   Widget _createListView() {
     ScrollController _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
         offSet = list.nextOffset;
         if (offSet != -1) {
           bloc.add(GetPhotoGalleryNextPageDataEvent(offSet: offSet));

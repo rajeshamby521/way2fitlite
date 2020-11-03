@@ -1,9 +1,9 @@
 import 'package:animated_widgets/widgets/scale_animated.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/dashboard/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/features/dashboard/presentation/widget/dashboard_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashBoardScreen extends StatelessWidget {
   static bool animate = false;
@@ -26,7 +26,7 @@ class DashBoardScreen extends StatelessWidget {
         builder: (BuildContext context, state) {
           return ScaleAnimatedWidget(
             enabled: DashBoardScreen.animate,
-            // enabled: true,
+            //enabled: true,
             duration: Duration(milliseconds: 300),
             values: [0.7, 1],
             child: DashBoardPage(pageNo: pageNo, bloc: bloc),

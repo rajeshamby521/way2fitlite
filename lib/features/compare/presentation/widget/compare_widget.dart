@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
 import 'package:way2fitlife/common/general_widget.dart';
@@ -8,13 +12,11 @@ import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
 Widget dateLabel({String label}) => labels(text: label, color: theme);
 
-Widget weightLabel({String label}) => labels(text: "$weight_kg $label", color: green800);
+Widget weightLabel({String label}) =>
+    labels(text: "$weight_kg $label", color: green800);
 
 Widget listItem({
   String dateTime1,
@@ -27,8 +29,10 @@ Widget listItem({
     Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(child: item(image: image1, dateTime: dateTime1, weight: weight1)),
-        Expanded(child: item(image: image2, dateTime: dateTime2, weight: weight2)),
+        Expanded(
+            child: item(image: image1, dateTime: dateTime1, weight: weight1)),
+        Expanded(
+            child: item(image: image2, dateTime: dateTime2, weight: weight2)),
       ],
     );
 
@@ -78,16 +82,54 @@ class AddPhotoData extends StatelessWidget {
   bool img2 = false;
   final picker = ImagePicker();
 
-  Future getImage(int i) async {
+  Future _imgFromGallery(int i) async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) if (i == 1) {
-      image1 = File(pickedFile.path);
-      bloc.add(GetComparePhotoEvent(image: image1, pic: i));
+    if (pickedFile != null) {
+      if (i == 1) {
+        image1 = File(pickedFile.path);
+        bloc.add(GetComparePhotoEvent(image: image1, pic: i));
+      } else {
+        image2 = File(pickedFile.path);
+        bloc.add(GetComparePhotoEvent(image: image2, pic: i));
+      }
     } else {
-      image2 = File(pickedFile.path);
-      bloc.add(GetComparePhotoEvent(image: image2, pic: i));
+      Fluttertoast.showToast(msg: 'errororr');
     }
+  }
+
+  void _showPicker(context, int pos) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () async {
+                        pos == 1
+                            ? await _imgFromGallery(pos)
+                            : await _imgFromGallery(pos);
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () async {
+                      /*pos == 1
+                          ? _image1 = await _imgFromCamera()
+                          : _image2 = await _imgFromCamera();*/
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -196,10 +238,13 @@ class AddPhotoData extends StatelessWidget {
               width: height * 0.14,
               child: image != null
                   ? imageFile(img: image)
-                  : icons(size: height * 0.1, icon: Icons.camera_alt, color: grey),
+                  : icons(
+                      size: height * 0.1, icon: Icons.camera_alt, color: grey),
             ),
           ),
-          onTap: () => getImage(select),
+          onTap: () {
+            _showPicker(context, select);
+          },
         ),
         verticalSpace(height * 0.01),
         image == null
@@ -212,7 +257,8 @@ class AddPhotoData extends StatelessWidget {
           child: InkWell(
             child: decoratedContainer(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.08, vertical: height * 0.01),
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.08, vertical: height * 0.01),
                 child: labels(
                   text: dateFormat(dateTime: dateTime, format: 'dd MMM yyyy'),
                   color: theme,
@@ -224,11 +270,13 @@ class AddPhotoData extends StatelessWidget {
               showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
-                firstDate: DateTime(2010),
-                lastDate: DateTime(2050),
+                firstDate: DateTime(1980, 1),
+                lastDate: DateTime.now(),
               ).then((value) {
                 bloc.add(
-                  GetCompareDateEvent(dateTime: value, pic: select),
+                  GetCompareDateEvent(
+                      dateTime: value == null ? DateTime.now() : value,
+                      pic: select),
                 );
               });
             },

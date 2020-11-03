@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:way2fitlife/features/login/presentation/pages/login_screen.dart';
 import 'package:way2fitlife/features/logout/logout_model.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
 import 'package:way2fitlife/utils/app_preference.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 logOut(context) async {
   Dio _dio = Dio(options);
@@ -17,15 +16,12 @@ logOut(context) async {
   map[device_token] = AppPreference.getString(device_token);
   map[lang] = "0";
 
-  AppPreference.clear();
-
   var response = await _dio.post(LogoutURL, data: FormData.fromMap(map));
   logOutModel = LogOutModel.fromMap(response.data);
-  Fluttertoast.showToast(msg: logOutModel.msg);
 
-  if (logOutModel.flag == 1)
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => LogInScreen()),
-      (Route<dynamic> route) => false,
-    );
+  if (logOutModel.flag == 1) AppPreference.clear();
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(builder: (context) => LogInScreen()),
+    (Route<dynamic> route) => false,
+  );
 }

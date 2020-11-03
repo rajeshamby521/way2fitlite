@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/appbar_widget.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/video_play_list/video_play_list.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoPlayListScreen extends StatefulWidget {
@@ -21,7 +22,8 @@ class _VideoPlayListScreenState extends State<VideoPlayListScreen> {
 
   @override
   void initState() {
-    videoId = YoutubePlayer.convertUrlToId("https://www.youtube.com/watch?v=BBAyRBTfsOU");
+    videoId = YoutubePlayer.convertUrlToId(
+        "https://www.youtube.com/watch?v=BBAyRBTfsOU");
     super.initState();
   }
 
@@ -38,6 +40,12 @@ class _VideoPlayListScreenState extends State<VideoPlayListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     return Scaffold(
       appBar: appbar(title: video_play_list, bloc: widget.bloc),
       body: ListView.separated(

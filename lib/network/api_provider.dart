@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 String baseURL = "http://dignizant.com/fittrack/api/";
@@ -6,7 +7,8 @@ String baseURL = "http://dignizant.com/fittrack/api/";
 BaseOptions options = BaseOptions(
   baseUrl: baseURL,
   headers: <String, String>{
-    'authorization': 'Basic ' + base64Encode(utf8.encode("fittrack:jd3Z=fn[\"2#^su\$Y"))
+    'authorization':
+        'Basic ' + base64Encode(utf8.encode("fittrack:jd3Z=fn[\"2#^su\$Y"))
   },
 );
 // jd3Z=fn["2#^su$Y
@@ -32,3 +34,11 @@ const String ChartDataURL = "chart/user_weight_chart/";
 
 const String GiveFeedBackURL = "user/save_feedback/";
 const String LogoutURL = "user/logout/";
+const String RegisterURL = "user/register/";
+const String UpdateUserURL = "user/save_user_profile/";
+const String ChangePasswordURL = "user/change_password/";
+const String ForumListURL = "forum/forum_list/";
+const String AddForumURL = "forum/save_forum/";
+const String ForumDetailsURL = "forum/forum_details/";
+const String AddCommentURL = "forum/add_comment/";
+const String ForgotPasswordURL = "user/forgot_password/";

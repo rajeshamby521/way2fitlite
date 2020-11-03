@@ -5,7 +5,7 @@ class AppPreference {
 
   static void init() async {
     prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    //prefs.clear();
   }
 
   static set(String key, dynamic value) {

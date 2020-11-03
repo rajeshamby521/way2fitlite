@@ -1,9 +1,17 @@
+import 'package:get_it/get_it.dart';
 import 'package:way2fitlife/features/chart/data/dataSource/chart_datasource.dart';
 import 'package:way2fitlife/features/chart/data/dataSource/chart_datasource_impl.dart';
 import 'package:way2fitlife/features/chart/data/repository/chart_repository_impl.dart';
 import 'package:way2fitlife/features/chart/domain/repository/chart_repository.dart';
 import 'package:way2fitlife/features/chart/domain/usecase/chart_usecase.dart';
 import 'package:way2fitlife/features/chart/presentation/bloc/bloc.dart';
+import 'package:way2fitlife/features/comment/data/dataresourse/comment_data_resourse.dart';
+import 'package:way2fitlife/features/comment/data/dataresourse/comment_data_resourse_iml.dart';
+import 'package:way2fitlife/features/comment/data/repository/comment_repository_iml.dart';
+import 'package:way2fitlife/features/comment/domian/repository/comment_repository.dart';
+import 'package:way2fitlife/features/comment/domian/usecase/comment_use_case.dart';
+import 'package:way2fitlife/features/comment/presentation/bloc/add_comment/add_comment_bloc.dart';
+import 'package:way2fitlife/features/comment/presentation/bloc/comment_bloc/comment_bloc.dart';
 import 'package:way2fitlife/features/compare/data/dataSource/compare_datasource.dart';
 import 'package:way2fitlife/features/compare/data/dataSource/compare_datasource_impl.dart';
 import 'package:way2fitlife/features/compare/data/repository/compare_repository_impl.dart';
@@ -54,6 +62,18 @@ import 'package:way2fitlife/features/food_instructions/data/repository/food_inst
 import 'package:way2fitlife/features/food_instructions/domain/repository/food_instruction_repository.dart';
 import 'package:way2fitlife/features/food_instructions/domain/usecase/food_instruction_usecase.dart';
 import 'package:way2fitlife/features/food_instructions/presentation/bloc/bloc.dart';
+import 'package:way2fitlife/features/forget_password/data/datasourse/forgot_password_data_resourse.dart';
+import 'package:way2fitlife/features/forget_password/data/datasourse/forgot_password_data_resourse_iml.dart';
+import 'package:way2fitlife/features/forget_password/data/repository/forgot_password_repository_iml.dart';
+import 'package:way2fitlife/features/forget_password/domain/repository/forgot_password_repository.dart';
+import 'package:way2fitlife/features/forget_password/domain/usecase/forgot_password_use_case.dart';
+import 'package:way2fitlife/features/forget_password/presentation/bloc/forgot_password_bloc.dart';
+import 'package:way2fitlife/features/forum/data/dataresourse/forum_data_resourse.dart';
+import 'package:way2fitlife/features/forum/data/dataresourse/forum_data_resourse_iml.dart';
+import 'package:way2fitlife/features/forum/data/repository/forum_repository_iml.dart';
+import 'package:way2fitlife/features/forum/domain/repository/forum_repository.dart';
+import 'package:way2fitlife/features/forum/domain/usecase/forum_use_case.dart';
+import 'package:way2fitlife/features/forum/presentation/bloc/forum_bloc.dart';
 import 'package:way2fitlife/features/home/data/datasource/home_data_source.dart';
 import 'package:way2fitlife/features/home/data/datasource/home_data_source_impl.dart';
 import 'package:way2fitlife/features/home/data/repository/home_repository_impl.dart';
@@ -72,20 +92,25 @@ import 'package:way2fitlife/features/photo_gallery/data/repository/photo_gallery
 import 'package:way2fitlife/features/photo_gallery/domain/repository/photo_gallery_repository.dart';
 import 'package:way2fitlife/features/photo_gallery/domain/usecase/photo_gallery_usecase.dart';
 import 'package:way2fitlife/features/photo_gallery/presentation/bloc/bloc.dart';
-import 'package:way2fitlife/features/signup/data/datasource/signup_datasource.dart';
-import 'package:way2fitlife/features/signup/data/datasource/signup_datasource_impl.dart';
-import 'package:way2fitlife/features/signup/data/repository/signup_repository_impl.dart';
-import 'package:way2fitlife/features/signup/domain/repository/signup_repository.dart';
-import 'package:way2fitlife/features/signup/domain/usecase/signup_usecase.dart';
-import 'package:way2fitlife/features/signup/presentation/bloc/bloc.dart';
+import 'package:way2fitlife/features/register_page/data/datasource/register_data_source.dart';
+import 'package:way2fitlife/features/register_page/data/datasource/register_data_source_iml.dart';
+import 'package:way2fitlife/features/register_page/data/repository/register_repository_iml.dart';
+import 'package:way2fitlife/features/register_page/domain/repository/register_repository.dart';
+import 'package:way2fitlife/features/register_page/domain/usecase/register_use_case.dart';
+import 'package:way2fitlife/features/register_page/presentation/bloc/bloc.dart';
+import 'package:way2fitlife/features/update_user_data/data/dataresourse/update_user_data_resourse.dart';
+import 'package:way2fitlife/features/update_user_data/data/dataresourse/update_user_data_resourse_iml.dart';
+import 'package:way2fitlife/features/update_user_data/data/repository/update_user_repository_iml.dart';
+import 'package:way2fitlife/features/update_user_data/domain/repository/update_user_repository.dart';
+import 'package:way2fitlife/features/update_user_data/domain/usecase/update_user_use_case.dart';
+import 'package:way2fitlife/features/update_user_data/presentation/bloc/change_passowrd_bloc/bloc.dart';
+import 'package:way2fitlife/features/update_user_data/presentation/bloc/update_user_bloc/bloc.dart';
 import 'package:way2fitlife/features/weight_sheet/data/datasource/weight_sheet_datasource.dart';
 import 'package:way2fitlife/features/weight_sheet/data/datasource/weight_sheet_datasource_impl.dart';
 import 'package:way2fitlife/features/weight_sheet/data/repository/weight_sheet_repository_impl.dart';
 import 'package:way2fitlife/features/weight_sheet/domain/repository/weight_sheet_repository.dart';
 import 'package:way2fitlife/features/weight_sheet/domain/usecase/weight_sheet_usecase.dart';
 import 'package:way2fitlife/features/weight_sheet/presentation/bloc/bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:way2fitlife/features/dashboard/domain/usecases/dashboard_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -121,37 +146,90 @@ Future<void> initGetServiceLocator() async {
   //DataSource
   getIt.registerLazySingleton<HomeDataSource>(() => HomeDataSourceImpl());
   //Repository
-  getIt.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(homeDataSource: getIt()));
+  getIt.registerLazySingleton<HomeRepository>(
+      () => HomeRepositoryImpl(homeDataSource: getIt()));
 
   ///LOGIN PAGE
   //Bloc
-  getIt.registerFactory(() => LogInBloc(logInButtonStatusUseCase: getIt(), logInUseCase: getIt()));
+  getIt.registerFactory(() =>
+      LogInBloc(logInButtonStatusUseCase: getIt(), logInUseCase: getIt()));
   //Use case
-  getIt.registerFactory(() => LogInButtonStatusUseCase(logInRepository: getIt()));
+  getIt.registerFactory(
+      () => LogInButtonStatusUseCase(logInRepository: getIt()));
   getIt.registerFactory(() => LogInUseCase(logInRepository: getIt()));
   //DataSource
   getIt.registerLazySingleton<LogInDataSource>(() => LogInDataSourceImpl());
   //Repository
-  getIt.registerLazySingleton<LogInRepository>(() => LogInRepositoryImpl(logInDataSource: getIt()));
+  getIt.registerLazySingleton<LogInRepository>(
+      () => LogInRepositoryImpl(logInDataSource: getIt()));
 
-  ///SIGNUP PAGE
+  // ///SIGNUP PAGE
+  // //Bloc
+  // getIt.registerFactory(() => SignUpBloc(
+  //       signUpUseCase: getIt(),
+  //       signUpEmailUseCase: getIt(),
+  //       signUpPasswordUseCase: getIt(),
+  //       signUpButtonStatusUseCase: getIt(),
+  //     ));
+  // //Use case
+  // getIt.registerFactory(() => SignUpUseCase(signUpRepository: getIt()));
+  // getIt.registerFactory(() => SignUpEmailUseCase(signUpRepository: getIt()));
+  // getIt.registerFactory(() => SignUpPasswordUseCase(signUpRepository: getIt()));
+  // getIt.registerFactory(() => SignUpButtonStatusUseCase(signUpRepository: getIt()));
+  // //DataSource
+  // getIt.registerLazySingleton<SignUpDataSource>(() => SignUpDataSourceImpl());
+  // //Repository
+  // getIt.registerLazySingleton<SignUpRepository>(
+  //     () => SignUpRepositoryImpl(signUpDataSource: getIt()));
+
+  ///REGISTER PAGE
   //Bloc
-  getIt.registerFactory(() => SignUpBloc(
-        signUpUseCase: getIt(),
-        signUpEmailUseCase: getIt(),
-        signUpPasswordUseCase: getIt(),
-        signUpButtonStatusUseCase: getIt(),
+  getIt.registerFactory(() => RegisterBloc(
+        registerSendDataUseCase: getIt(),
       ));
   //Use case
-  getIt.registerFactory(() => SignUpUseCase(signUpRepository: getIt()));
-  getIt.registerFactory(() => SignUpEmailUseCase(signUpRepository: getIt()));
-  getIt.registerFactory(() => SignUpPasswordUseCase(signUpRepository: getIt()));
-  getIt.registerFactory(() => SignUpButtonStatusUseCase(signUpRepository: getIt()));
-  //DataSource
-  getIt.registerLazySingleton<SignUpDataSource>(() => SignUpDataSourceImpl());
-  //Repository
-  getIt.registerLazySingleton<SignUpRepository>(
-      () => SignUpRepositoryImpl(signUpDataSource: getIt()));
+  getIt.registerFactory(
+      () => RegisterSendDataUseCase(registerRepository: getIt()));
+  //repository
+  getIt.registerLazySingleton<RegisterRepository>(
+      () => RegisterRepositoryIml(registerDataSource: getIt()));
+  //dataSourse
+  getIt
+      .registerLazySingleton<RegisterDataSource>(() => RegisterDataSourceiml());
+
+  ///UPDATE_USER_DATA
+  //Bloc
+  getIt.registerFactory(() => UpdateUserBloc(updateUserUseCase: getIt()));
+  //Use Case
+  getIt.registerFactory(() => UpdateUserUseCase(updateUserRepository: getIt()));
+  //repository
+  getIt.registerLazySingleton<UpdateUserRepository>(
+      () => UpdateUserRepositoryIml(updateUserDataResourse: getIt()));
+  //dataSourse
+  getIt.registerLazySingleton<UpdateUserDataResourse>(
+      () => UpdateUserDataResourseIml());
+
+  ///CHANGE PASSWORD
+  //BLOC
+  getIt.registerFactory(
+      () => ChangePasswordBloc(changePasswordUseCase: getIt()));
+  //useCase
+  getIt.registerFactory(
+      () => ChangePasswordUseCase(updateUserRepository: getIt()));
+
+  ///FORGOT PASSWORD
+  //BLOC
+  getIt.registerFactory(
+      () => ForgotPasswordBloc(forgotPasswordUseCase: getIt()));
+  //usecase
+  getIt.registerFactory(
+      () => ForgotPasswordUseCase(forgotPasswordRepository: getIt()));
+  //repository
+  getIt.registerLazySingleton<ForgotPasswordRepository>(
+      () => ForgotPasswordRepositoryIml(forgotPasswordDataResourse: getIt()));
+  //data resourse
+  getIt.registerLazySingleton<ForgotPasswordDataResourse>(
+      () => ForgotPasswordDataResourseIml());
 
   ///CURRENT BMR PAGE
   //Bloc
@@ -162,12 +240,17 @@ Future<void> initGetServiceLocator() async {
         selectActivityUseCase: getIt(),
       ));
   //Use case
-  getIt.registerFactory(() => CalculateBMRUseCase(currentBMRRepository: getIt()));
-  getIt.registerFactory(() => CalculateCaloriesUseCase(currentBMRRepository: getIt()));
-  getIt.registerFactory(() => SelectGenderUseCase(currentBMRRepository: getIt()));
-  getIt.registerFactory(() => SelectActivityUseCase(currentBMRRepository: getIt()));
+  getIt.registerFactory(
+      () => CalculateBMRUseCase(currentBMRRepository: getIt()));
+  getIt.registerFactory(
+      () => CalculateCaloriesUseCase(currentBMRRepository: getIt()));
+  getIt.registerFactory(
+      () => SelectGenderUseCase(currentBMRRepository: getIt()));
+  getIt.registerFactory(
+      () => SelectActivityUseCase(currentBMRRepository: getIt()));
   //DataSource
-  getIt.registerLazySingleton<CurrentBMRDataSource>(() => CurrentBMRDataSourceImpl());
+  getIt.registerLazySingleton<CurrentBMRDataSource>(
+      () => CurrentBMRDataSourceImpl());
   //Repository
   getIt.registerLazySingleton<CurrentBMRRepository>(
       () => CurrentBMRRepositoryImpl(currentBMRDataSource: getIt()));
@@ -181,12 +264,15 @@ Future<void> initGetServiceLocator() async {
         setWeightSheetUseCase: getIt(),
       ));
   //Use Case
-  getIt.registerFactory(() => WeightSheetUseCase(weightSheetRepository: getIt()));
-  getIt.registerFactory(() => SetWeightSheetUseCase(weightSheetRepository: getIt()));
+  getIt.registerFactory(
+      () => WeightSheetUseCase(weightSheetRepository: getIt()));
+  getIt.registerFactory(
+      () => SetWeightSheetUseCase(weightSheetRepository: getIt()));
   getIt.registerFactory(() => WeightUseCase(weightSheetRepository: getIt()));
   getIt.registerFactory(() => DateUseCase(weightSheetRepository: getIt()));
   //DataSource
-  getIt.registerLazySingleton<WeightSheetDataSource>(() => WeightSheetDataSourceImpl());
+  getIt.registerLazySingleton<WeightSheetDataSource>(
+      () => WeightSheetDataSourceImpl());
   //Repository
   getIt.registerLazySingleton<WeightSheetRepository>(
       () => WeightSheetRepositoryImpl(weightSheetDataSource: getIt()));
@@ -195,9 +281,11 @@ Future<void> initGetServiceLocator() async {
   //Bloc
   getIt.registerFactory(() => FoodDirectoryBloc(foodDirectoryUseCase: getIt()));
   //Use case
-  getIt.registerFactory(() => FoodDirectoryUseCase(foodDirectoryRepository: getIt()));
+  getIt.registerFactory(
+      () => FoodDirectoryUseCase(foodDirectoryRepository: getIt()));
   //DataSource
-  getIt.registerLazySingleton<FoodDirectoryDataSource>(() => FoodDirectoryDataSourceImpl());
+  getIt.registerLazySingleton<FoodDirectoryDataSource>(
+      () => FoodDirectoryDataSourceImpl());
   //Repository
   getIt.registerLazySingleton<FoodDirectoryRepository>(
       () => FoodDirectoryRepositoryImpl(foodDirectoryDataSource: getIt()));
@@ -210,12 +298,41 @@ Future<void> initGetServiceLocator() async {
       ));
   //Use case
   getIt.registerFactory(() => RichFoodUseCase(richFoodRepository: getIt()));
-  getIt.registerFactory(() => RichFoodDetailUseCase(richFoodRepository: getIt()));
+  getIt.registerFactory(
+      () => RichFoodDetailUseCase(richFoodRepository: getIt()));
   //DataSource
-  getIt.registerLazySingleton<RichFoodDataSource>(() => RichFoodDataSourceImpl());
+  getIt.registerLazySingleton<RichFoodDataSource>(
+      () => RichFoodDataSourceImpl());
   //Repository
   getIt.registerLazySingleton<RichFoodRepository>(
       () => RichFoodRepositoryImpl(richFoodDataSource: getIt()));
+
+  ///FORUM
+  //bloc
+  getIt.registerFactory(
+      () => ForumBloc(forumfetchUseCase: getIt(), addForumUseCase: getIt()));
+  //use case
+  getIt.registerFactory(() => ForumfetchUseCase(forumRepository: getIt()));
+  getIt.registerFactory(() => AddForumUseCase(forumRepository: getIt()));
+  //repository
+  getIt.registerLazySingleton<ForumRepository>(
+      () => ForumRepositoryIml(forumDataResourse: getIt()));
+  //data resourse
+  getIt.registerLazySingleton<ForumDataResourse>(() => ForumDataResouseIml());
+
+  ///COMMENT
+  //bloc
+  getIt.registerFactory(() => CommentBloc(forumDetailsUseCase: getIt()));
+  getIt.registerFactory(() => AddCommentBloc(addCommentUseCase: getIt()));
+  //use case
+  getIt.registerFactory(() => ForumDetailsUseCase(commentRepository: getIt()));
+  getIt.registerFactory(() => AddCommnetUseCase(commentRepository: getIt()));
+  //repository
+  getIt.registerLazySingleton<CommentRepository>(
+      () => CommentRepositoryIml(commentDataResourse: getIt()));
+  //data resourse
+  getIt.registerLazySingleton<CommentDataResourse>(
+      () => CommentDataResourseIml());
 
   ///PHOTO GALLERY PAGE
   //Bloc
@@ -227,13 +344,19 @@ Future<void> initGetServiceLocator() async {
         photoUseCase: getIt(),
       ));
   //Use Case
-  getIt.registerFactory(() => PhotoGalleryDataUseCase(photoGalleryRepository: getIt()));
-  getIt.registerFactory(() => SetPhotoGalleryDataUseCase(photoGalleryRepository: getIt()));
-  getIt.registerFactory(() => PhotoGalleryPhotoUseCase(photoGalleryRepository: getIt()));
-  getIt.registerFactory(() => PhotoGalleryWeightUseCase(photoGalleryRepository: getIt()));
-  getIt.registerFactory(() => PhotoGalleryDateUseCase(photoGalleryRepository: getIt()));
+  getIt.registerFactory(
+      () => PhotoGalleryDataUseCase(photoGalleryRepository: getIt()));
+  getIt.registerFactory(
+      () => SetPhotoGalleryDataUseCase(photoGalleryRepository: getIt()));
+  getIt.registerFactory(
+      () => PhotoGalleryPhotoUseCase(photoGalleryRepository: getIt()));
+  getIt.registerFactory(
+      () => PhotoGalleryWeightUseCase(photoGalleryRepository: getIt()));
+  getIt.registerFactory(
+      () => PhotoGalleryDateUseCase(photoGalleryRepository: getIt()));
   //DataSource
-  getIt.registerLazySingleton<PhotoGalleryDataSource>(() => PhotoGalleryDataSourceImpl());
+  getIt.registerLazySingleton<PhotoGalleryDataSource>(
+      () => PhotoGalleryDataSourceImpl());
   //Repository
   getIt.registerLazySingleton<PhotoGalleryRepository>(
       () => PhotoGalleryRepositoryImpl(photoGalleryDataSource: getIt()));
@@ -248,8 +371,10 @@ Future<void> initGetServiceLocator() async {
         photoUseCase: getIt(),
       ));
   //Use Case
-  getIt.registerFactory(() => GetCompareDataUseCase(compareRepository: getIt()));
-  getIt.registerFactory(() => SetCompareDataUseCase(compareRepository: getIt()));
+  getIt
+      .registerFactory(() => GetCompareDataUseCase(compareRepository: getIt()));
+  getIt
+      .registerFactory(() => SetCompareDataUseCase(compareRepository: getIt()));
   getIt.registerFactory(() => ComparePhotoUseCase(compareRepository: getIt()));
   getIt.registerFactory(() => CompareWeightUseCase(compareRepository: getIt()));
   getIt.registerFactory(() => CompareDateUseCase(compareRepository: getIt()));
@@ -261,11 +386,14 @@ Future<void> initGetServiceLocator() async {
 
   ///FOOD INSTRUCTION PAGE
   //Bloc
-  getIt.registerFactory(() => FoodInstructionBloc(foodInstructionUseCase: getIt()));
+  getIt.registerFactory(
+      () => FoodInstructionBloc(foodInstructionUseCase: getIt()));
   //Use Case
-  getIt.registerFactory(() => FoodInstructionUseCase(foodInstructionRepository: getIt()));
+  getIt.registerFactory(
+      () => FoodInstructionUseCase(foodInstructionRepository: getIt()));
   //DataSource
-  getIt.registerLazySingleton<FoodInstructionDataSource>(() => FoodInstructionDataSourceImpl());
+  getIt.registerLazySingleton<FoodInstructionDataSource>(
+      () => FoodInstructionDataSourceImpl());
   //Repository
   getIt.registerLazySingleton<FoodInstructionRepository>(
       () => FoodInstructionRepositoryImpl(foodInstructionDataSource: getIt()));
@@ -278,17 +406,20 @@ Future<void> initGetServiceLocator() async {
   //DataSource
   getIt.registerLazySingleton<ChartDataSource>(() => ChartDataSourceImpl());
   //Repository
-  getIt.registerLazySingleton<ChartRepository>(() => ChartRepositoryImpl(chartDataSource: getIt()));
+  getIt.registerLazySingleton<ChartRepository>(
+      () => ChartRepositoryImpl(chartDataSource: getIt()));
 
   ///FEEDBACK PAGE
   //Bloc
-  getIt.registerFactory(
-      () => FeedbackBloc(feedbackDataUseCase: getIt(), feedbackButtonStatusUseCase: getIt()));
+  getIt.registerFactory(() => FeedbackBloc(
+      feedbackDataUseCase: getIt(), feedbackButtonStatusUseCase: getIt()));
   //Use Case
   getIt.registerFactory(() => FeedbackDataUseCase(feedbackRepository: getIt()));
-  getIt.registerFactory(() => FeedbackButtonStatusUseCase(feedbackRepository: getIt()));
+  getIt.registerFactory(
+      () => FeedbackButtonStatusUseCase(feedbackRepository: getIt()));
   //DataSource
-  getIt.registerLazySingleton<FeedbackDataSource>(() => FeedbackDataSourceImpl());
+  getIt.registerLazySingleton<FeedbackDataSource>(
+      () => FeedbackDataSourceImpl());
   //Repository
   getIt.registerLazySingleton<FeedbackRepository>(
       () => FeedbackRepositoryImpl(feedbackDataSource: getIt()));
