@@ -68,8 +68,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     if (AppPreference.getString(userData) != null) {
-      userDetails =
-          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+      userDetails = UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
     super.initState();
   }
@@ -83,8 +82,7 @@ class _MyAppState extends State<MyApp> {
     ]);
 
     if (AppPreference.getString(userData) != null) {
-      userDetails =
-          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+      userDetails = UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
     // bloc.add(FetchSelectPageEvent(pageNo: 0));
     return Scaffold(
