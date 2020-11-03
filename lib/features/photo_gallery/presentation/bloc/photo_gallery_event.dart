@@ -14,6 +14,7 @@ class GetPhotoGalleryNextPageDataEvent extends PhotoGalleryEvent {
   GetPhotoGalleryNextPageDataEvent({this.offSet});
 }
 
+//add photo
 class SetPhotoGalleryDataEvent extends PhotoGalleryEvent {
   File image;
   String date;
@@ -30,6 +31,7 @@ class SetPhotoGalleryDataEvent extends PhotoGalleryEvent {
 //   GetPhotoGalleryDataEvent({this.dateTime, this.weight, this.image});
 // }
 
+//for indivisual
 class GetPhotoGalleryPhotoEvent extends PhotoGalleryEvent {
   File image;
 

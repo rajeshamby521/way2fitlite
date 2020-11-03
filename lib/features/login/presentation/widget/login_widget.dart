@@ -1,13 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/field_and_label.dart';
 import 'package:way2fitlife/common/general_widget.dart';
+import 'package:way2fitlife/features/forget_password/presentation/page/forgot_password_screen.dart';
 import 'package:way2fitlife/features/login/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/main.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/ui_helper/text_style.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget skipButton(BuildContext context) => Padding(
       padding: const EdgeInsets.all(8.0),
@@ -32,6 +34,8 @@ class LogInCard extends StatelessWidget {
 
   final Bloc bloc;
   final bool buttonStatus;
+  FocusNode emialFocus = FocusNode();
+  FocusNode passwordFocus = FocusNode();
 
   LogInCard(
     BuildContext context, {
@@ -59,14 +63,17 @@ class LogInCard extends StatelessWidget {
                 icon: icons(icon: Icons.email, color: theme, size: 22),
                 labelBackgroundColor: white,
                 inputType: TextInputType.emailAddress,
+                inputAction: TextInputAction.next,
                 validationMessage: emailMsg,
+                fieldType: FieldType.TextField,
                 labelTextStyle: defaultHomeTextStyle(color: black),
                 labelValue: txt_email,
                 hint: enterEmail,
                 enabled: true,
                 onChanged: (value) {
                   email = value;
-                  bloc.add(GetLogInButtonStatusEvent(email: email, password: password));
+                  bloc.add(GetLogInButtonStatusEvent(
+                      email: email, password: password));
                 },
               ),
               verticalSpace(10),
@@ -74,6 +81,8 @@ class LogInCard extends StatelessWidget {
                 icon: icons(icon: Icons.lock, color: theme, size: 22),
                 labelBackgroundColor: white,
                 validationMessage: passMsg,
+                fieldType: FieldType.TextField,
+                inputAction: TextInputAction.done,
                 labelTextStyle: defaultHomeTextStyle(color: black),
                 labelValue: txt_password,
                 hint: enterPassword,
@@ -81,8 +90,23 @@ class LogInCard extends StatelessWidget {
                 enabled: true,
                 onChanged: (value) {
                   password = value;
-                  bloc.add(GetLogInButtonStatusEvent(email: email, password: password));
+                  bloc.add(GetLogInButtonStatusEvent(
+                      email: email, password: password));
                 },
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ForgotPasswordScreen(),
+                  ));
+                },
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Forgot Passowrd?',
+                    style: TextStyle(color: grey),
+                  ),
+                ),
               ),
               verticalSpace(10),
               submitButton(

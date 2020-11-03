@@ -1,13 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/drawer/presentation/widget/drawer_widget.dart';
 import 'package:way2fitlife/features/login/data/datamodel/login_model.dart';
+//import 'package:way2fitlife/features/register_page/data/datamodel/response_data_model.dart';
+import 'package:way2fitlife/features/update_user_data/presentation/page/update_user_data.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomDrawer extends StatelessWidget {
   Bloc bloc;
@@ -56,7 +58,10 @@ class CustomDrawer extends StatelessWidget {
                               );
                           },
                         ),
-                        title: labels(text: userData.username ?? guest, color: theme, size: 14),
+                        title: labels(
+                            text: userData.username ?? guest,
+                            color: theme,
+                            size: 14),
                         subtitle: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -74,13 +79,20 @@ class CustomDrawer extends StatelessWidget {
                             ),
                           ],
                         ),
-                        onTap: () => userData.username ?? noLoginAlertDialog(context),
+                        onTap: () =>
+                            userData.username ?? noLoginAlertDialog(context),
                       ),
                     ),
                     if (userData.userId != null)
                       IconButton(
-                        icon: icons(icon: Icons.edit, color: iconColor, size: height * 0.03),
-                        onPressed: () {},
+                        icon: icons(
+                            icon: Icons.edit,
+                            color: iconColor,
+                            size: height * 0.03),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => UpdateUserData()));
+                        },
                       )
                   ],
                 ),
@@ -91,4 +103,10 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+
+/*void moveToUpdatePage(context) async {
+    final UserData updatedUserData =
+        await
+    ));
+  }*/
 }

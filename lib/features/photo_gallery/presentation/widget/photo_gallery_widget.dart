@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
 import 'package:way2fitlife/common/general_widget.dart';
@@ -8,13 +11,11 @@ import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
 Widget dateLabel({String label}) => labels(text: label, color: theme);
 
-Widget weightLabel({String label}) => labels(text: "$weight_kg $label", color: green800);
+Widget weightLabel({String label}) =>
+    labels(text: "$weight_kg $label", color: green800);
 
 Widget listItem({String date, String weight, String image}) {
   return Card(
@@ -57,11 +58,49 @@ class AddPhotoData extends StatelessWidget {
   bool img = false;
   final picker = ImagePicker();
 
-  Future getImage() async {
+  Future _imgFromGallery() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     if (pickedFile != null) image = File(pickedFile.path);
     bloc.add(GetPhotoGalleryPhotoEvent(image: image));
+  }
+
+  Future _imgFromCamera() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    if (pickedFile != null) image = File(pickedFile.path);
+    bloc.add(GetPhotoGalleryPhotoEvent(image: image));
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                    leading: Icon(Icons.photo_library),
+                    title: Text('Photo Library'),
+                    onTap: () async {
+                      image = await _imgFromGallery();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  new ListTile(
+                    leading: Icon(Icons.photo_camera),
+                    title: Text('Camera'),
+                    onTap: () async {
+                      image = await _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -90,10 +129,15 @@ class AddPhotoData extends StatelessWidget {
                     width: height * 0.17,
                     child: img
                         ? imageFile(img: image)
-                        : icons(size: height * 0.1, icon: Icons.camera_alt, color: grey),
+                        : icons(
+                            size: height * 0.1,
+                            icon: Icons.camera_alt,
+                            color: grey),
                   ),
                 ),
-                onTap: getImage,
+                onTap: () {
+                  _showPicker(context);
+                },
               ),
               verticalSpace(height * 0.01),
               !img
@@ -105,8 +149,8 @@ class AddPhotoData extends StatelessWidget {
               InkWell(
                 child: decoratedContainer(
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: width * 0.08, vertical: height * 0.01),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.08, vertical: height * 0.01),
                     child: labels(
                       text: dateFormat(dateTime: dateTime),
                       color: theme,
@@ -118,9 +162,10 @@ class AddPhotoData extends StatelessWidget {
                   showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2010),
-                    lastDate: DateTime(2050),
-                  ).then((value) => bloc.add(GetPhotoGalleryDateEvent(dateTime: value)));
+                    firstDate: DateTime(1980, 1),
+                    lastDate: DateTime.now(),
+                  ).then((value) => bloc.add(GetPhotoGalleryDateEvent(
+                      dateTime: value == null ? DateTime.now() : value)));
                 },
               ),
               verticalSpace(height * 0.01),
@@ -131,7 +176,8 @@ class AddPhotoData extends StatelessWidget {
                 endValue: 150,
                 initialItem: 50,
                 onItemChanged: (val) {
-                  bloc.add(GetPhotoGalleryWeightEvent(weight: double.parse((val + 10).toString())));
+                  bloc.add(GetPhotoGalleryWeightEvent(
+                      weight: double.parse((val + 10).toString())));
                 },
               ),
               verticalSpace(height * 0.01),

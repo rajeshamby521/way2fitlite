@@ -29,3 +29,17 @@ const String ic_birthdate = 'assets/icons/ic_birthdate.png';
 const String ic_boy = 'assets/icons/ic_boy.png';
 const String ic_girl = 'assets/icons/ic_girl.png';
 const String ic_fitness_person = 'assets/icons/ic_fitness_person.png';
+const String ic_person = 'assets/icons/ic_person.png';
+const String ic_email = 'assets/icons/ic_email.png';
+const String user_placeholder = 'assets/icons/user_placeholder.png';
+
+// const String user_placeholder = 'assets/icons/user_placeholder.png';
+// const String ic_height_gray_register_screen = 'assets/icons/ic_height_gray_register_screen.png';
+// const String ic_weight_gray_register_screen = 'assets/icons/ic_weight_gray_register_screen.png';
+// const String ic_birthdate_gray_register_screen =
+//     'assets/icons/ic_birthdate_gray_register_screen.png';
+// const String ic_mobile_number_gray_register_screen =
+//     'assets/icons/ic_mobile_number_gray_register_screen.png';
+// const String ic_activity_level_gray_register_screen =
+//     'assets/icons/ic_activity_level_gray_register_screen.png';
+// const String ic_password_gray_register_screen = 'assets/icons/ic_password_gray_register_screen.png';

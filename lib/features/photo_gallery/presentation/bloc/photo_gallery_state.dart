@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:meta/meta.dart';
 import 'package:way2fitlife/features/photo_gallery/data/dataModel/photo_gallery_model.dart';
 import 'package:way2fitlife/features/photo_gallery/data/dataModel/set_photo_gallery_data_model.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 abstract class PhotoGalleryState {}
@@ -29,16 +29,16 @@ class GetPhotoGalleryDataState extends PhotoGalleryState {
   GetPhotoGalleryDataState({this.data});
 }
 
-class SetPhotoGalleryDataState extends PhotoGalleryState {
-  SetPhotoGalleryDataModel data;
-
-  SetPhotoGalleryDataState({this.data});
-}
-
 class GetPhotoGalleryNextPageDataState extends PhotoGalleryState {
   PhotoGalleryModel data;
 
   GetPhotoGalleryNextPageDataState({this.data});
+}
+
+class SetPhotoGalleryDataState extends PhotoGalleryState {
+  SetPhotoGalleryDataModel data;
+
+  SetPhotoGalleryDataState({this.data});
 }
 
 class GetPhotoGalleryPhotoState extends PhotoGalleryState {
