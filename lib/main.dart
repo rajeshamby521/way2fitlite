@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/dashboard/presentation/pages/dashboard_screen.dart';
-import 'package:way2fitlife/features/drawer/presentation/pages/drawer_screen.dart';
 import 'package:way2fitlife/features/home/presentation/widget/home_widget.dart';
 import 'package:way2fitlife/features/login/data/datamodel/login_model.dart';
 import 'package:way2fitlife/features/login/presentation/pages/login_screen.dart';
@@ -19,6 +18,8 @@ import 'package:way2fitlife/utils/app_preference.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
 import 'features/drawer/presentation/bloc/bloc.dart';
+
+import 'dart:io' show Platform;
 
 Future<String> _getToken() async {
   var deviceInfo = DeviceInfoPlugin();
