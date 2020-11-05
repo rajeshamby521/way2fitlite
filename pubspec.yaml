@@ -45,6 +45,7 @@ dependencies:
   bezier_chart:
   youtube_player_flutter:
   url_launcher:
+  photo_view:
   ext_video_player:
 
 dev_dependencies:

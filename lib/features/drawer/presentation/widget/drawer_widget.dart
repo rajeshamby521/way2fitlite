@@ -17,8 +17,15 @@ class DrawerList extends StatelessWidget {
 
   DrawerList({this.bloc});
 
+  String userId = "";
+
+  getUserId() async {
+    userId = await AppPreference.getString(user_id);
+  }
+
   @override
   Widget build(BuildContext context) {
+    getUserId();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -87,7 +94,6 @@ class DrawerList extends StatelessWidget {
         ),
         onTap: () async {
           DashBoardScreen.animate = true;
-          String userId = await AppPreference.getString(user_id);
           if (pageNo == 13) {
             logoutAlertDialog(context);
           } else if (pageNo == 12) {
