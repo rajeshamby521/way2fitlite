@@ -85,67 +85,85 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              FieldAndLabel(
-                                fieldType: FieldType.TextField,
-                                enabled: true,
-                                hint: enter_subject,
-                                labelValue: subject,
-                                labelTextStyle: TextStyle(fontSize: 18),
-                                controller: txtSubController,
-                                inputType: TextInputType.text,
-                                //validationMessage: subErr,
-                                inputAction: TextInputAction.next,
-                                focusNode: txtSubFocus,
-                                nextFocusNode: txtMsgFocus,
-                                onChanged: (value) {
-                                  sub = value;
-                                  print(sub + "   " + msg);
-                                  feedbackBloc.add(GetFeedbackButtonStatusEvent(
-                                    subject: sub,
-                                    message: msg,
-                                  ));
-                                },
-                              ),
-                              verticalSpace(10),
-                              FieldAndLabel(
-                                fieldType: FieldType.TextField,
-                                enabled: true,
-                                hint: enter_message,
-                                labelValue: message,
-                                labelTextStyle: TextStyle(fontSize: 18),
-                                controller: txtMsgController,
-                                inputType: TextInputType.text,
-                                //validationMessage: msgErr,
-                                inputAction: TextInputAction.done,
-                                focusNode: txtMsgFocus,
-                                nextFocusNode: null,
-                                onChanged: (value) {
-                                  msg = value;
-                                  print(sub + "   " + msg);
-                                  feedbackBloc.add(GetFeedbackButtonStatusEvent(
-                                    subject: sub,
-                                    message: msg,
-                                  ));
-                                },
-                              ),
-                              /*submitFeedbackButton(
-                                status: buttonStatus,
-                                onPress: () {
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: labels(
+                                      text: subject,
+                                      size: 15,
+                                      textAlign: TextAlign.left),
+                                ),
+                                FieldAndLabel(
+                                  fieldType: FieldType.TextField,
+                                  enabled: true,
+                                  hint: enter_subject,
+                                  labelTextStyle: TextStyle(fontSize: 18),
+                                  controller: txtSubController,
+                                  inputType: TextInputType.text,
+                                  //validationMessage: subErr,
+                                  inputAction: TextInputAction.next,
+                                  focusNode: txtSubFocus,
+                                  nextFocusNode: txtMsgFocus,
+                                  onChanged: (value) {
+                                    sub = value;
+                                    print(sub + "   " + msg);
+                                    feedbackBloc
+                                        .add(GetFeedbackButtonStatusEvent(
+                                      subject: sub,
+                                      message: msg,
+                                    ));
+                                  },
+                                ),
+                                verticalSpace(10),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: labels(
+                                      text: message,
+                                      size: 15,
+                                      textAlign: TextAlign.left),
+                                ),
+                                TextField(
+                                  decoration: InputDecoration(
+                                    hintText: enter_message,
+                                    labelStyle: TextStyle(fontSize: 18),
+                                    border: OutlineInputBorder(),
+                                    fillColor: white,
+                                    filled: true,
+                                  ),
+                                  keyboardType: TextInputType.multiline,
+                                  controller: txtMsgController,
+                                  focusNode: txtMsgFocus,
+                                  minLines: 2,
+                                  maxLines: 3,
+                                  onChanged: (value) {
+                                    msg = value;
+                                    print(sub + "   " + msg);
+                                    feedbackBloc
+                                        .add(GetFeedbackButtonStatusEvent(
+                                      subject: sub,
+                                      message: msg,
+                                    ));
+                                  },
+                                ),
+                                /*submitFeedbackButton(
+                                  status: buttonStatus,
+                                  onPress: () {
 
-                                },
-                              ),*/
-                              submitButton(
-                                  text: addFeedBack,
-                                  textColor: white,
-                                  disable: !buttonStatus,
-                                  onPressed: () {
-                                    feedbackBloc.add(GiveFeedbackEvent(
-                                        subject: sub, msg: msg));
-                                  }),
-                            ],
+                                  },
+                                ),*/
+                                submitButton(
+                                    text: addFeedBack,
+                                    textColor: white,
+                                    disable: !buttonStatus,
+                                    onPressed: () {
+                                      feedbackBloc.add(GiveFeedbackEvent(
+                                          subject: sub, msg: msg));
+                                    }),
+                              ],
+                            ),
                           ),
                         ),
                       ),

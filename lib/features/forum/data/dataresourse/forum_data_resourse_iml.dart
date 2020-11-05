@@ -21,7 +21,7 @@ class ForumDataResouseIml extends ForumDataResourse {
 
     Response response =
         await dio.post(ForumListURL, data: FormData.fromMap(map));
-    //print("ForumDatamodel---->${response.data}");
+    print("ForumDatamodel---->${response.data}");
     forumDataModel = forumDataModelFromJson(response.data);
 
     return forumDataModel;

@@ -3,9 +3,9 @@ import 'dart:math' as math;
 class CalculateBMIUseCase {
   double bmr;
 
-  double calculateBMR(String w, String h) {
-    double weigth = double.parse(w);
-    double height = double.parse(h);
+  double calculateBMR(double w, double h) {
+    double weigth = w;
+    double height = h;
     double hei = height / 100;
 
     double _bmr = weigth / math.pow(hei, 2);

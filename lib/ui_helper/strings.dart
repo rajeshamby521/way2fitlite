@@ -51,17 +51,12 @@ const String weightGain = "Weight Gain";
 const String maintain = "Maintain";
 const String checkInfo = "Check Info";
 const String whatIsBMR = "What is BMR?";
+const String whatIsBMI = "What is BMI?";
 const String bottomSheetBmr =
-    "BMI (body mass index) is a calculated number representing a perBMI (body mass index) is a "
-    "calculated number representing a person\'s level of fat or obesity level. According to the "
-    "Centers for Disease Control and Prevention (CDC), a BMI of 30 or above indicates obesity. "
-    "BMI levels are broken down by weight range and are as follows:";
+    "Basal metabolic rate is the rate of energy expenditure per unit time by endothermic animals at rest. It is reported in energy units per unit time ranging from watt to ml O₂/min or joule per hour per kg body mass J/. Proper measurement requires a strict set of criteria be met";
 //new
 const String bottomSheetBmi =
-    "Body Mass Index is a simple calculation using a person's height and weight. The"
-    "formula is BMI = kg/m2 where kg is a person's weight in kilograms and m2 is their"
-    "height in metres squared. A BMI of 25.0 or more is overweight, while the healthy range"
-    "is 18.5 to 24.9.";
+    "Body Mass Index is a simple calculation using a person's height and weight. The formula is BMI = kg/m2 where kg is a person's weight in kilograms and m2 is their height in metres squared. A BMI of 25.0 or more is overweight, while the healthy range is 18.5 to 24.9.";
 
 const String photoGallery = "Photo Gallery";
 const String addPhoto = "Add Photo";

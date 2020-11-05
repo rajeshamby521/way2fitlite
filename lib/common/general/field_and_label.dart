@@ -128,6 +128,7 @@ class _FieldAndLabelState extends State<FieldAndLabel> {
         autofocus: widget.autoFocus,
         enabled: widget.enabled ?? true,
         controller: widget.controller,
+        textCapitalization: TextCapitalization.sentences,
         onChanged: widget.onChanged,
         textInputAction: widget.inputAction,
         onFieldSubmitted: (val) {

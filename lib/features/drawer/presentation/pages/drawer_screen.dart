@@ -4,7 +4,6 @@ import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/drawer/presentation/widget/drawer_widget.dart';
 import 'package:way2fitlife/features/login/data/datamodel/login_model.dart';
-//import 'package:way2fitlife/features/register_page/data/datamodel/response_data_model.dart';
 import 'package:way2fitlife/features/update_user_data/presentation/page/update_user_data.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
@@ -27,7 +26,9 @@ class CustomDrawer extends StatelessWidget {
           Container(
             height: Scr.infinite,
             width: Scr.screenWidth * 0.3,
-            child: DrawerList(bloc: bloc),
+            child: DrawerList(
+              bloc: bloc,
+            ),
           ),
           Expanded(
             child: Padding(

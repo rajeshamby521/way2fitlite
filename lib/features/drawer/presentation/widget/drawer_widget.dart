@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share/share.dart';
@@ -12,20 +14,31 @@ import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/app_preference.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
-class DrawerList extends StatelessWidget {
+class DrawerList extends StatefulWidget {
   final Bloc bloc;
 
   DrawerList({this.bloc});
 
-  String userId = "";
+  @override
+  _DrawerListState createState() => _DrawerListState();
+}
 
-  getUserId() async {
+class _DrawerListState extends State<DrawerList> {
+  String userId;
+
+  @override
+  void initState() {
+    super.initState();
+    getid();
+  }
+
+  void getid() async {
     userId = await AppPreference.getString(user_id);
+    print("user id--->${userId}");
   }
 
   @override
   Widget build(BuildContext context) {
-    getUserId();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -39,6 +52,7 @@ class DrawerList extends StatelessWidget {
               icon: ic_weight,
               label: weight_sheet,
               pageNo: 3),
+          drawerItem(context: context, icon: ic_chart, label: chart, pageNo: 8),
           drawerItem(
               context: context,
               icon: ic_food,
@@ -59,14 +73,15 @@ class DrawerList extends StatelessWidget {
           drawerItem(context: context, icon: ic_chart, label: chart, pageNo: 8),
           drawerItem(
               context: context, icon: ic_compare, label: compare, pageNo: 9),
-          drawerItem(
-              context: context, icon: ic_forum, label: forum, pageNo: 10),
+          /* drawerItem(
+              context: context, icon: ic_forum, label: forum, pageNo: 10),*/
           drawerItem(
               context: context, icon: ic_feedback, label: feedback, pageNo: 11),
           drawerItem(
               context: context, icon: ic_share, label: share_app, pageNo: 12),
-          drawerItem(
-              context: context, icon: ic_logout, label: logout, pageNo: 13),
+          if (userId != null)
+            drawerItem(
+                context: context, icon: ic_logout, label: logout, pageNo: 13),
         ],
       ),
     );
@@ -94,13 +109,22 @@ class DrawerList extends StatelessWidget {
         ),
         onTap: () async {
           DashBoardScreen.animate = true;
+
           if (pageNo == 13) {
-            logoutAlertDialog(context);
+            userId != null
+                ? logoutAlertDialog(context)
+                : noLoginAlertDialog(context);
           } else if (pageNo == 12) {
-            Share.share("Hello dear all, Good Morning");
+            Share.share(
+              Platform.isIOS
+                  ? "Hey, Please install this amazing app which helps to track fitness and provide good nutritional information."
+                  : "Hey, Please install this amazing app which helps to track fitness and provide good nutritional information."
+                      "https://play.google.com/store/apps/details?id=com.way2fitlife",
+              //https://play.google.com/store/apps/details?id=com.way2fitlife
+            );
           } else {
             (userId != null || pageNo <= 2)
-                ? bloc.add(FetchSelectPageEvent(pageNo: pageNo))
+                ? widget.bloc.add(FetchSelectPageEvent(pageNo: pageNo))
                 : noLoginAlertDialog(context);
           }
         },

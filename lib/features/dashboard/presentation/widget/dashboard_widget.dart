@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/features/chart/presentation/pages/chart_screen.dart';
-import 'package:way2fitlife/features/compare/presentation/pages/compare_screen.dart';
 import 'package:way2fitlife/features/current_bmi/presentation/pages/current_bmi_screen.dart';
 import 'package:way2fitlife/features/current_bmr/presentation/pages/current_bmr_screen.dart';
 import 'package:way2fitlife/features/feedback/presentation/pages/feedback_screen.dart';
@@ -52,9 +51,9 @@ Widget DashBoardPage({int pageNo, Bloc bloc}) {
       return ChartScreen(bloc: bloc);
       break;
     //Compare
-    case 9:
+    /*case 9:
       return CompareScreen(bloc: bloc);
-      break;
+      break;*/
     // Forum
     case 10:
       return ForumScreen(bloc: bloc);

@@ -8,8 +8,10 @@ import 'package:way2fitlife/features/logout/logout_api_alert.dart';
 import 'package:way2fitlife/features/update_user_data/presentation/bloc/change_passowrd_bloc/bloc.dart';
 import 'package:way2fitlife/features/update_user_data/presentation/bloc/change_passowrd_bloc/change_password_event.dart';
 import 'package:way2fitlife/features/update_user_data/presentation/bloc/change_passowrd_bloc/change_password_state.dart';
+import 'package:way2fitlife/network/api_strings.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
+import 'package:way2fitlife/utils/app_preference.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -70,7 +72,10 @@ class _ChangePasswordState extends State<ChangePassword> {
               conf_passMsg = state.conf_pass;
             } else if (state is ChangePasswordCompleteState) {
               if (state.model.flag == 1) {
+                AppPreference.prefs
+                    .setString(access_token, state.model.accessToken);
                 Fluttertoast.showToast(msg: state.model.msg);
+                //AppPreference.clear();
                 logOut(context);
               } else {
                 Fluttertoast.showToast(msg: state.model.msg);

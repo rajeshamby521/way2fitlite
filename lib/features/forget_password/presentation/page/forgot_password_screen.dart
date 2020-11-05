@@ -58,9 +58,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               emailMsg = state.email;
             } else if (state is ForgotPasswordCompleteState) {
               if (state.model.flag == 1) {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(state.model.msg),
-                ));
+                Navigator.of(context).pop();
               } else {
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text(state.model.msg),

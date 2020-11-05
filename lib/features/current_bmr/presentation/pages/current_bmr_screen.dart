@@ -54,6 +54,7 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
               appBar: appbar(
                 bloc: widget.bloc,
                 title: bmr,
+                bottmInfoTitle: whatIsBMR,
                 bottomInfo: bottomSheetBmr,
                 context: context,
               ),

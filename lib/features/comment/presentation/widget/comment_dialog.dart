@@ -7,10 +7,16 @@ import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/comment/presentation/bloc/add_comment/add_comment_bloc.dart';
 import 'package:way2fitlife/features/comment/presentation/bloc/add_comment/add_commnet_event.dart';
 import 'package:way2fitlife/features/comment/presentation/bloc/add_comment/add_commnet_state.dart';
+import 'package:way2fitlife/features/comment/presentation/bloc/comment_bloc/comment_event.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 
 class CommentDialog extends StatefulWidget {
+  Bloc bloc;
+  String forum_id;
+
+  CommentDialog({this.bloc, this.forum_id});
+
   @override
   _CommentDialogState createState() => _CommentDialogState();
 }
@@ -48,6 +54,7 @@ class _CommentDialogState extends State<CommentDialog> {
           commMsg = state.commnetMsg;
         } else if (state is AddCommentclickState) {
           if (state.model.flag == 1) {
+            widget.bloc.add(ForumDetailEvent(forum_id: widget.forum_id));
             Navigator.of(context).pop();
             Fluttertoast.showToast(msg: state.model.msg);
           }

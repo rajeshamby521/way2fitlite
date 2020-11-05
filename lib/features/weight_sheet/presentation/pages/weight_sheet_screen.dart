@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:way2fitlife/common/general/appbar_widget.dart';
 import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
@@ -8,12 +12,7 @@ import 'package:way2fitlife/features/weight_sheet/data/datamodel/weight_sheet_mo
 import 'package:way2fitlife/features/weight_sheet/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/features/weight_sheet/presentation/widget/weight_sheet_widget.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
-import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 
 class WeightSheetScreen extends StatefulWidget {
   Bloc bloc;
@@ -48,7 +47,8 @@ class _WeightSheetScreenState extends State<WeightSheetScreen> {
         if (state is LoadingEndHomeState) isLoading = false;
         if (state is LoadingBeginNextPageState) isPageLoading = true;
         if (state is LoadingEndNextPageState) isPageLoading = false;
-        if (state is GetWeightSheetState || state is GetWeightSheetNextPageState) {
+        if (state is GetWeightSheetState ||
+            state is GetWeightSheetNextPageState) {
           weightSheetDataList = state.data;
           weightList.addAll(weightSheetDataList.data);
         }
@@ -61,26 +61,37 @@ class _WeightSheetScreenState extends State<WeightSheetScreen> {
               ? "0${state.data.data.date.month.toString()}"
               : state.data.data.date.month.toString();
           String year = state.data.data.date.year.toString();
-          String weight = state.data.data.weight != "0" ? state.data.data.weight + " kg" : "60 kg";
+          String weight = state.data.data.weight != "0"
+              ? state.data.data.weight + " kg"
+              : "60 kg";
 
           bool isAlready = false;
 
           weightList.forEach((element) {
-            if (DateFormat('MMMM , yyyy', 'en_US').parse(element.createDate).month ==
+            if (DateFormat('MMMM , yyyy', 'en_US')
+                        .parse(element.createDate)
+                        .month ==
                     state.data.data.date.month &&
-                DateFormat('MMMM , yyyy', 'en_US').parse(element.createDate).year ==
+                DateFormat('MMMM , yyyy', 'en_US')
+                        .parse(element.createDate)
+                        .year ==
                     state.data.data.date.year) isAlready = true;
           });
 
           weightList.forEach((element) {
-            if (DateFormat('MMMM , yyyy', 'en_US').parse(element.createDate).month ==
+            if (DateFormat('MMMM , yyyy', 'en_US')
+                        .parse(element.createDate)
+                        .month ==
                     state.data.data.date.month &&
-                DateFormat('MMMM , yyyy', 'en_US').parse(element.createDate).year ==
+                DateFormat('MMMM , yyyy', 'en_US')
+                        .parse(element.createDate)
+                        .year ==
                     state.data.data.date.year) {
-              weightList[weightList.indexOf(element)].weightData.add(WeightDatum(
-                  weight: weight,
-                  date: day + "-" + month + "-" + year,
-                  weightId: state.data.data.weightId));
+              weightList[weightList.indexOf(element)].weightData.add(
+                  WeightDatum(
+                      weight: weight,
+                      date: day + "-" + month + "-" + year,
+                      weightId: state.data.data.weightId));
             }
           });
 
@@ -95,7 +106,8 @@ class _WeightSheetScreenState extends State<WeightSheetScreen> {
                     weightId: state.data.data.weightId,
                   ),
                 ],
-                createDate: dateFormat(dateTime: state.data.data.date, format: 'MMMM , yyyy'),
+                createDate: dateFormat(
+                    dateTime: state.data.data.date, format: 'MMMM , yyyy'),
               ),
             );
           }
@@ -108,14 +120,17 @@ class _WeightSheetScreenState extends State<WeightSheetScreen> {
         builder: (BuildContext context, state) {
           return SafeArea(
             child: Scaffold(
-              appBar: appbar(bloc: widget.bloc, title: weightSheet, context: context),
+              appBar: appbar(
+                  bloc: widget.bloc, title: weightSheet, context: context),
               body: Container(
                   // decoration: boxDecoration(
                   //   image: bg_bmi_screen,
                   //   color: veryLightTheme,
                   //   colorFilter: ColorFilter.mode(black.withOpacity(1), BlendMode.dstATop),
                   // ),
-                  child: isLoading ? circularProgressIndicator : _createListView()),
+                  child: isLoading
+                      ? circularProgressIndicator
+                      : _createListView()),
               floatingActionButton: extendedFloatingButton(
                 context: context,
                 bloc: bloc,
@@ -125,8 +140,9 @@ class _WeightSheetScreenState extends State<WeightSheetScreen> {
                 backgroundColor: headerColor,
                 dialogContent: AddWeightData(bloc: bloc),
               ),
-              bottomSheet:
-                  isPageLoading ? Container(height: 40, child: circularProgressIndicator) : null,
+              bottomSheet: isPageLoading
+                  ? Container(height: 40, child: circularProgressIndicator)
+                  : null,
             ),
           );
         },
@@ -137,7 +153,8 @@ class _WeightSheetScreenState extends State<WeightSheetScreen> {
   Widget _createListView() {
     ScrollController _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
         offSet = weightSheetDataList.nextOffset;
         if (offSet != -1) {
           bloc.add(GetWeightSheetNextPageEvent(offSet: offSet));

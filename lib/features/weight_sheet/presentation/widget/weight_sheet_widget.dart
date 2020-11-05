@@ -129,7 +129,7 @@ class AddWeightData extends StatelessWidget {
                 onPressed: () {
                   bloc.add(SetWeightSheetEvent(
                       date: dateTime.toString(),
-                      weight: weight.toString() ?? "60"));
+                      weight: weight.toString() ?? 60));
                   Navigator.pop(context);
                 },
               ),

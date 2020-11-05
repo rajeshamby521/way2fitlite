@@ -16,6 +16,8 @@ logOut(context) async {
   map[device_token] = AppPreference.getString(device_token);
   map[lang] = "0";
 
+  AppPreference.clear();
+
   var response = await _dio.post(LogoutURL, data: FormData.fromMap(map));
   logOutModel = LogOutModel.fromMap(response.data);
 

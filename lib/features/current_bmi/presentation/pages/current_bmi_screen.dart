@@ -2,11 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:way2fitlife/common/general/field_and_label.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
-import 'package:way2fitlife/features/current_bmi/presentation/widget/enabel_button.dart';
 import 'package:way2fitlife/features/current_bmi/presentation/widget/meter_builder.dart';
+import 'package:way2fitlife/features/current_bmr/presentation/widget/current_bmr_widget.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
@@ -28,183 +27,148 @@ class CurrentBMIScreen extends StatefulWidget {
 }
 
 class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
-  final weightController = TextEditingController();
-  final heightController = TextEditingController();
-  final yearController = TextEditingController();
-  final weightFocus = FocusNode();
-  final heightFocus = FocusNode();
-  String height = "";
-  String weight = "";
+  double weightKg = 60;
+  double heightCm = 150;
   double bmr = 0.00;
+  double calculation = 0.0;
+  bool btnStatus = false;
 
   final bloc = getIt<CurrentBMIBloc>();
   GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
   void initState() {
-    bloc.add(BmiInitialEvent(enabel: false));
     super.initState();
   }
 
   @override
   void dispose() {
-    weightController.dispose();
-    heightController.dispose();
-    yearController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appbar(
-        bloc: widget.bloc,
-        title: bmi,
-        bottomInfo: bottomSheetBmi,
-        context: context,
-      ),
-      body: Container(
-        height: double.maxFinite,
-        decoration: boxDecoration(
-          color: Colors.transparent,
-          image: bg_login,
-        ),
-        child: BlocListener<CurrentBMIBloc, BmiState>(
-          cubit: bloc,
-          listener: (context, state) {
-            if (state is BmiErrorState) {
-              Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.msg)));
-            } else if (state is BmiInitialState) {
-              buildwidget(state.bmiDataModel, state.enabel);
-            } else if (state is BmiDataState) {
-              buildwidget(state.bmiDataModel, state.ena);
-            } else {
-              return Container();
-            }
-          },
-          child: BlocBuilder<CurrentBMIBloc, BmiState>(
-            cubit: bloc,
-            builder: (context, state) {
-              if (state is BmiErrorState)
-                return ErrorWidget(state.msg);
-              else if (state is BmiInitialState)
-                return buildwidget(bmr, state.enabel);
-              else if (state is BmiDataState) {
-                return buildwidget(state.bmiDataModel, state.ena);
-              } else
-                return Container();
-            },
-          ),
-        ),
-      ),
-      // bottomNavigationBar: InkWell(
-      //     onTap: () {},
-      //     child: Container(
-      //       height: 40,
-      //       color: theme,
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: [
-      //           Icon(
-      //             Icons.keyboard_arrow_down,
-      //             color: Colors.white,
-      //             size: 40,
-      //           ),
-      //           Text(
-      //             "Check Info",
-      //             style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
-      //           ),
-      //         ],
-      //       ),
-      //     )),
-    );
-  }
-
-  Widget buttonBuilder(String name, bool enable, bool c) {
-    return RaisedButton(
-      onPressed: () {
-        c ? calculate(enable) : reset();
+    return BlocListener<CurrentBMIBloc, BmiState>(
+      cubit: bloc,
+      listener: (context, state) {
+        if (state is BmiErrorState) {
+          Scaffold.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
+        } else if (state is BmiDataState) {
+          calculation = state.bmiDataModel;
+          btnStatus = state.ena;
+        } else {
+          btnStatus = false;
+          calculation = 0.0;
+        }
       },
-      textColor: Colors.white,
-      color: Colors.transparent,
-      padding: const EdgeInsets.all(0.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      child: c
-          ? EnabelButton(
-              name: name,
-              status: enable,
-              width: 150,
-            )
-          : EnabelButton(name: name, status: true, width: 150),
+      child: BlocBuilder<CurrentBMIBloc, BmiState>(
+        cubit: bloc,
+        builder: (context, state) {
+          return SafeArea(
+              child: Scaffold(
+                  appBar: appbar(
+                    bloc: widget.bloc,
+                    title: bmi,
+                    bottmInfoTitle: whatIsBMR,
+                    bottomInfo: bottomSheetBmr,
+                    context: context,
+                  ),
+                  body: Container(
+                    alignment: Alignment.centerLeft,
+                    height: Scr.screenHeight,
+                    width: Scr.screenWidth,
+                    decoration: boxDecoration(
+                      color: Colors.transparent,
+                      image: bg_bmr_bmi,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        height: Scr.screenHeight,
+                        width: Scr.screenWidth,
+                        decoration: BoxDecoration(
+                          // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                              Colors.white,
+                              theme,
+                            ],
+                          ),
+                        ),
+                        child: Wrap(
+                          runSpacing: 30.0,
+                          children: [
+                            buildForm(),
+                            buildMeter(calculation),
+                            bmiBuild(calculation),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )));
+        },
+      ),
     );
   }
 
-  Widget buildForm(bool enabel) {
-    return Stack(
-      children: [
-        Container(
-          margin: const EdgeInsets.all(10.0),
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 15.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Wrap(
-            runSpacing: 12.0,
-            children: [
-              FieldAndLabel(
-                hint: "Weight",
-                enabled: true,
-                inputType: TextInputType.number,
-                autoFocus: false,
-                controller: weightController,
-                inputAction: TextInputAction.next,
-                focusNode: weightFocus,
-                nextFocusNode: heightFocus,
-                onChanged: (value) {
-                  weight = value;
-
-                  height != "" && weight != ""
-                      ? bloc.add(BmiInitialEvent(enabel: true))
-                      : bloc.add(BmiInitialEvent(enabel: false));
-                },
-              ),
-              FieldAndLabel(
-                hint: "Height",
-                controller: heightController,
-                autoFocus: false,
-                inputType: TextInputType.number,
-                enabled: true,
-                focusNode: heightFocus,
-                nextFocusNode: null,
-                onChanged: (value) {
-                  height = value;
-                  height != "" && weight != ""
-                      ? bloc.add(BmiInitialEvent(enabel: true))
-                      : bloc.add(BmiInitialEvent(enabel: false));
-                },
-              ),
-
-              //rest calculate button
-              Container(
-                height: 50,
-                child: Center(
-                  child: Wrap(
-                    spacing: 20.0,
-                    children: [
-                      //reset
-                      buttonBuilder('Reset', enabel, false),
-                      //calculate
-                      buttonBuilder('Calculate', enabel, true),
-                    ],
-                  ),
-                ),
-              ),
+  Widget buildForm() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: <Color>[
+              gradientStart,
+              gradientEnd,
             ],
           ),
         ),
-      ],
+        child: Column(
+          children: [
+            verticalSpace(Scr.screenHeight * 0.03),
+            Row(
+              children: [
+                Expanded(
+                  child: pickerWithLabel(
+                    labelText: weight_kg,
+                    measure: kg,
+                    startValue: 10,
+                    endValue: 150,
+                    initialItem: 50,
+                    onItemChanged: (val) =>
+                        weightKg = double.parse((val + 10).toString()),
+                  ),
+                ),
+                Expanded(
+                  child: pickerWithLabel(
+                    labelText: height_cm,
+                    measure: cm,
+                    startValue: 50,
+                    endValue: 200,
+                    initialItem: 100,
+                    onItemChanged: (val) =>
+                        heightCm = double.parse((val + 50).toString()),
+                  ),
+                ),
+              ],
+            ),
+            verticalSpace(Scr.screenHeight * 0.03),
+            raisedButton(
+              label: calculate,
+              onPressed: () => bloc.add(
+                BmiDataFetchEvent(
+                  weight: weightKg,
+                  height: heightCm,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -225,7 +189,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                   child: MeterBuilder(cat: underWeight, val: underWeightRange),
                 ),
                 Container(
-                  child: 0.0 < model
+                  child: 0.0 <= model
                       ? model < 18.5
                           ? CustomPaint(
                               size: Size(10, 10),
@@ -255,8 +219,8 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                   child: MeterBuilder(cat: normal, val: normalRange),
                 ),
                 Container(
-                  child: 18.5 < model
-                      ? model < 24.9
+                  child: 18.5 <= model
+                      ? model < 25.0
                           ? CustomPaint(
                               size: Size(10, 10),
                               painter: DrawTrilangeShape(),
@@ -286,8 +250,8 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                 Expanded(
                     child: MeterBuilder(cat: overWeight, val: overWeightRange)),
                 Container(
-                  child: 25.0 < model
-                      ? model < 29.9
+                  child: 25.0 <= model
+                      ? model < 30.0
                           ? CustomPaint(
                               size: Size(10, 10),
                               painter: DrawTrilangeShape(),
@@ -346,9 +310,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
               color: white,
               boxShadow: [BoxShadow(blurRadius: 10, color: black54)]),
           child: Stack(
-            //alignment: AlignmentDirectional.topStart,
             children: [
-              // Center(child: CustomPaint(painter: MyPainter())),
               Align(
                 alignment: Alignment.center,
                 child: Column(
@@ -369,12 +331,12 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                     ),
                     listDivider(padding: 40),
                     Text(
-                      0.1 < _bmr
+                      0.0 < _bmr
                           ? _bmr < 18.5
                               ? underWeight
-                              : _bmr < 24.9
+                              : _bmr < 25.0
                                   ? normal
-                                  : _bmr < 29.9
+                                  : _bmr < 30.0
                                       ? overWeight
                                       : obeses
                           : ' ',
@@ -398,7 +360,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                             ? overWeightMsg
                             : obeseMsg
                 : ' ',
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 18, color: white),
           ),
         )
       ],
@@ -406,31 +368,9 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
   }
 
   Widget buildwidget(double model, bool enabel) {
-    return Wrap(
-      runSpacing: 20.0,
-      children: [
-        buildForm(enabel),
-        buildMeter(model),
-        bmiBuild(model),
-      ],
+    return SingleChildScrollView(
+      child: Container(),
     );
-  }
-
-  void calculate(bool enabel) {
-    enabel
-        ? bloc.add(BmiDataFetchEvent(
-            weight: weightController.text,
-            height: heightController.text,
-          ))
-        // ignore: unnecessary_statements
-        : null;
-  }
-
-  void reset() {
-    bloc.add(BmiInitialEvent(enabel: enabel));
-    weightController.clear();
-    heightController.clear();
-    yearController.clear();
   }
 }
 

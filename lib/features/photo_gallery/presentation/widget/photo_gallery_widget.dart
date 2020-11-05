@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
+import 'package:way2fitlife/common/general/view_image.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/photo_gallery/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
-import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
@@ -17,34 +17,51 @@ Widget dateLabel({String label}) => labels(text: label, color: theme);
 Widget weightLabel({String label}) =>
     labels(text: "$weight_kg $label", color: green800);
 
-Widget listItem({String date, String weight, String image}) {
-  return Card(
-    color: white,
-    elevation: 20,
-    shadowColor: green,
-    margin: EdgeInsets.all(15),
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Container(
-              child: image != null && image.isNotEmpty
-                  ? imageNetwork(img: image)
-                  : imageAsset(img: bg_food_eat),
+class listItem extends StatelessWidget {
+  String date;
+  String weight;
+  String image;
+
+  listItem({this.date, this.weight, this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: white,
+      elevation: 20,
+      shadowColor: green,
+      margin: EdgeInsets.all(15),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Container(
+                child: image != null && image.isNotEmpty
+                    ? GestureDetector(
+                        child: imageNetwork(img: image),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => ViewImage(
+                                    image: image,
+                                  )));
+                        },
+                      )
+                    : Container(),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: dateLabel(label: date),
-          ),
-          weightLabel(label: weight.toString()),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: dateLabel(label: date),
+            ),
+            weightLabel(label: weight.toString()),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class AddPhotoData extends StatelessWidget {

@@ -9,8 +9,8 @@ class BmiInitialEvent extends BmiEvent {
 }
 
 class BmiDataFetchEvent extends BmiEvent {
-  final String weight;
-  final String height;
+  final double weight;
+  final double height;
 
   BmiDataFetchEvent({@required this.weight, @required this.height});
 }

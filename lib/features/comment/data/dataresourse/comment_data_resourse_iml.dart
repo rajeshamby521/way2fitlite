@@ -21,7 +21,7 @@ class CommentDataResourseIml extends CommentDataResourse {
 
     Response response =
         await dio.post(ForumDetailsURL, data: FormData.fromMap(map));
-    //print("forumDetails-->${response.data}");
+    print("forumDetails-->${response.data}");
     forumDetailDataModel = forumDetailDataModelFromJson(response.data);
 
     return forumDetailDataModel;

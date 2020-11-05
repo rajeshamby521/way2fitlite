@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/comment/data/datamodel/forum_details_data_model.dart';
@@ -56,14 +57,13 @@ class _CommentScreenState extends State<CommentScreen> {
         if (state is CommentLoadingBeginState) isLoading = true;
         if (state is CommentLoadingEndState) isLoading = false;
         if (state is ForumDetaislState) {
+          isLoading = false;
           topic = state.model.data.forumTopic;
           title = state.model.data.forumTitle;
           desc = state.model.data.description ?? " ";
           date = state.model.data.date;
           commentList = state.model.data.forumComments;
-        } else {
-          bloc.add(ForumDetailEvent(forum_id: widget.forum_id));
-        }
+        } else {}
       },
       child: BlocBuilder(
         cubit: bloc,
@@ -80,7 +80,10 @@ class _CommentScreenState extends State<CommentScreen> {
               label: add,
               backgroundColor: headerColor,
               iconLabelColor: white,
-              dialogContent: CommentDialog(),
+              dialogContent: CommentDialog(
+                bloc: bloc,
+                forum_id: widget.forum_id,
+              ),
             ),
             body: SafeArea(
               child: Container(
@@ -92,29 +95,36 @@ class _CommentScreenState extends State<CommentScreen> {
                   colorFilter: ColorFilter.mode(
                       black.withOpacity(0.8), BlendMode.dstATop),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    verticalSpace(10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: white,
-                        borderRadius: BorderRadius.circular(10.0),
+                child: isLoading
+                    ? screenProgressIndicator
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          verticalSpace(10),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: white,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            margin: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: CommentHeader(
+                              topic: topic,
+                              title: title,
+                              desc: desc,
+                              date: date,
+                            ),
+                          ),
+                          commentList == null
+                              ? Container()
+                              : Expanded(
+                                  child:
+                                      /*sLoading
+                                      ? circularProgressIndicator
+                                      : */
+                                      _createListView()),
+                        ],
                       ),
-                      margin: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: CommentHeader(
-                        topic: topic,
-                        title: title,
-                        desc: desc,
-                        date: date,
-                      ),
-                    ),
-                    commentList == null
-                        ? Container()
-                        : Expanded(child: _createListView()),
-                  ],
-                ),
               ),
             ),
           );

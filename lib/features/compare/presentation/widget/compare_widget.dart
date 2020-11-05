@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
+import 'package:way2fitlife/common/general/view_image.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/compare/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
@@ -36,7 +37,16 @@ Widget listItem({
       ],
     );
 
-Widget item({String dateTime, String weight, String image}) => Container(
+class item extends StatelessWidget {
+  String dateTime;
+  String weight;
+  String image;
+
+  item({this.dateTime, this.weight, this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
       height: height * 0.3,
       child: Card(
         color: white,
@@ -52,7 +62,15 @@ Widget item({String dateTime, String weight, String image}) => Container(
               Expanded(
                 child: Container(
                   child: image != null
-                      ? Image.network(image, fit: BoxFit.fill)
+                      ? GestureDetector(
+                          child: Image.network(image, fit: BoxFit.fill),
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => ViewImage(
+                                      image: image,
+                                    )));
+                          },
+                        )
                       : imageAsset(img: bg_food_eat),
                 ),
               ),
@@ -66,6 +84,8 @@ Widget item({String dateTime, String weight, String image}) => Container(
         ),
       ),
     );
+  }
+}
 
 class AddPhotoData extends StatelessWidget {
   Bloc bloc;
@@ -76,14 +96,30 @@ class AddPhotoData extends StatelessWidget {
   DateTime dateTime2 = DateTime.now();
   File image1;
   File image2;
-  double weight1;
-  double weight2;
+  double weight1 = 60;
+  double weight2 = 60;
   bool img1 = false;
   bool img2 = false;
   final picker = ImagePicker();
 
   Future _imgFromGallery(int i) async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      if (i == 1) {
+        image1 = File(pickedFile.path);
+        bloc.add(GetComparePhotoEvent(image: image1, pic: i));
+      } else {
+        image2 = File(pickedFile.path);
+        bloc.add(GetComparePhotoEvent(image: image2, pic: i));
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'errororr');
+    }
+  }
+
+  Future _imgFromCamera(int i) async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       if (i == 1) {
@@ -119,9 +155,9 @@ class AddPhotoData extends StatelessWidget {
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('Camera'),
                     onTap: () async {
-                      /*pos == 1
-                          ? _image1 = await _imgFromCamera()
-                          : _image2 = await _imgFromCamera();*/
+                      pos == 1
+                          ? await _imgFromCamera(pos)
+                          : await _imgFromCamera(pos);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -202,12 +238,14 @@ class AddPhotoData extends StatelessWidget {
                 disable: false,
                 onPressed: () {
                   if (img1 && img2) {
+                    print('img1-->${image1.toString()}');
+                    print('img2-->${image2.toString()}');
                     bloc.add(SetCompareDataEvent(
                       beforeDate: dateTime1.toString(),
-                      beforeWeight: weight1.toString() ?? "60",
+                      beforeWeight: weight1.toString(),
                       beforeImage: image1,
                       afterDate: dateTime2.toString(),
-                      afterWeight: weight2.toString() ?? "60",
+                      afterWeight: weight2.toString(),
                       afterImage: image2,
                     ));
                     Navigator.pop(context);

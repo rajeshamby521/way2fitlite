@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
-String baseURL = "http://dignizant.com/fittrack/api/";
+String baseURL = "https://dignizant.com/fittrack/api/";
+//https://dignizant.com/fittrack/api/user/forgot_password
 
 BaseOptions options = BaseOptions(
   baseUrl: baseURL,

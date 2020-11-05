@@ -1,16 +1,15 @@
-import 'package:way2fitlife/common/common_data.dart';
-import 'package:way2fitlife/common/general_widget.dart';
-import 'package:way2fitlife/features/chart/data/dataModel/chart_model.dart';
-import 'package:way2fitlife/features/chart/presentation/bloc/bloc.dart';
-import 'package:way2fitlife/features/current_bmr/presentation/widget/current_bmr_widget.dart';
-import 'package:way2fitlife/ui_helper/colors.dart';
-import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:way2fitlife/ui_helper/text_style.dart';
-import 'package:way2fitlife/utils/screen_utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:way2fitlife/common/common_data.dart';
+import 'package:way2fitlife/common/general_widget.dart';
+import 'package:way2fitlife/features/chart/data/dataModel/chart_model.dart';
+import 'package:way2fitlife/features/chart/presentation/bloc/bloc.dart';
+import 'package:way2fitlife/ui_helper/colors.dart';
+import 'package:way2fitlife/ui_helper/strings.dart';
+import 'package:way2fitlife/ui_helper/text_style.dart';
+import 'package:way2fitlife/utils/screen_utils.dart';
 
 List<Color> gradientColors = [
   gradientStart,
@@ -53,20 +52,26 @@ LineChartData mainData(List<Datum> data, monthly) {
       LineChartBarData(
         spots: [
           for (int i = 0; i < data.length; i++)
-            FlSpot(monthly ? i.toDouble() / 3 : i.toDouble(), double.parse(data[i].weight) / 10)
+            FlSpot(monthly ? i.toDouble() / 3 : i.toDouble(),
+                double.parse(data[i].weight) / 10)
         ],
         colors: gradientColors,
         // dotData: FlDotData(show: false),
         belowBarData: BarAreaData(
-            show: true, colors: gradientColors.map((color) => color.withOpacity(0.5)).toList()),
+            show: true,
+            colors:
+                gradientColors.map((color) => color.withOpacity(0.5)).toList()),
       ),
     ],
-    axisTitleData: FlAxisTitleData(bottomTitle: axisTitle(month), leftTitle: axisTitle(weight)),
+    axisTitleData: FlAxisTitleData(
+        bottomTitle: axisTitle(month), leftTitle: axisTitle(weight)),
   );
 }
 
 AxisTitle axisTitle(String data) => AxisTitle(
-    showTitle: true, titleText: data, textStyle: defaultHomeTextStyle(color: theme, size: 20));
+    showTitle: true,
+    titleText: data,
+    textStyle: defaultHomeTextStyle(color: theme, size: 20));
 
 class Selection extends StatefulWidget {
   final Bloc bloc;
@@ -78,9 +83,16 @@ class Selection extends StatefulWidget {
 }
 
 class _SelectionState extends State<Selection> {
-  int tabValue = 1;
-  bool showMonthSelector = false;
-  int select = DateTime.now().month;
+  int tabValue = 0;
+  bool showMonthSelector = true;
+  int select = DateTime.now().month - 1;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc
+        .add(GetChartDataEvent(month: (select + 1).toString(), dateType: "2"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +109,8 @@ class _SelectionState extends State<Selection> {
               showMonthSelector = value == 0 ? true : false;
             });
             value == 0
-                ? widget.bloc.add(GetChartDataEvent(month: (select + 1).toString(), dateType: "2"))
+                ? widget.bloc.add(GetChartDataEvent(
+                    month: (select + 1).toString(), dateType: "2"))
                 : widget.bloc.add(GetChartDataEvent(month: "", dateType: "1"));
           },
           children: {
@@ -119,7 +132,8 @@ class _SelectionState extends State<Selection> {
       opacity: showMonthSelector ? 1 : 0,
       child: showMonthSelector
           ? Wrap(children: [
-              for (int i = 0; i < monthsList.length; i++) button(label: monthsList[i], index: i)
+              for (int i = 0; i < monthsList.length; i++)
+                button(label: monthsList[i], index: i)
             ])
           : Container(),
     );
@@ -131,11 +145,13 @@ class _SelectionState extends State<Selection> {
         onPressed: () {
           setState(() {
             select = index;
-            widget.bloc.add(GetChartDataEvent(month: (select + 1).toString(), dateType: "2"));
+            widget.bloc.add(GetChartDataEvent(
+                month: (select + 1).toString(), dateType: "2"));
           });
         },
         color: select == index ? headerColor : white,
-        shape: roundedRectangleBorder(radius: 10, side: BorderSide(color: theme)),
+        shape:
+            roundedRectangleBorder(radius: 10, side: BorderSide(color: theme)),
         child: labels(text: label, color: select == index ? white : theme),
       );
 }

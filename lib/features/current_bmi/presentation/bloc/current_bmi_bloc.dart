@@ -12,12 +12,9 @@ class CurrentBMIBloc extends Bloc<BmiEvent, BmiState> {
   CurrentBMIBloc({this.useCase}) : super(null);
   @override
   Stream<BmiState> mapEventToState(BmiEvent event) async* {
-    if (event is BmiInitialEvent) {
-      enabel = event.enabel;
-      yield BmiInitialState(0.00, event.enabel);
-    } else if (event is BmiDataFetchEvent) {
-      String w = event.weight;
-      String h = event.height;
+    if (event is BmiDataFetchEvent) {
+      double w = event.weight;
+      double h = event.height;
 
       double result = useCase.calculateBMR(w, h);
       yield BmiDataState(result, enabel);

@@ -87,41 +87,48 @@ class _MyAppState extends State<MyApp> {
           UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
     // bloc.add(FetchSelectPageEvent(pageNo: 0));
-    return Scaffold(
-      backgroundColor: home_background,
-      body: SafeArea(
-        child: BlocListener(
-          cubit: bloc,
-          listener: (BuildContext context, state) {
-            if (state is LoadingBeginHomeState) {
-              isLoading = true;
-            } else if (state is LoadingEndHomeState) {
-              isLoading = false;
-            } else if (state is FetchSelectPageState) {
-              page = state.pageNo;
-            }
-          },
-          child: BlocBuilder(
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        backgroundColor: home_background,
+        body: SafeArea(
+          child: BlocListener(
             cubit: bloc,
-            builder: (BuildContext context, state) {
-              // return LogInScreen();
-              return Stack(
-                children: [
-                  Container(
-                    child: logoImage(
-                      image: bg_login,
-                      height: Scr.infinite,
-                      width: Scr.infinite,
-                    ),
-                  ),
-                  CustomDrawer(bloc: bloc, userData: userDetails),
-                  DashBoardScreen(pageNo: page),
-                ],
-              );
+            listener: (BuildContext context, state) {
+              if (state is LoadingBeginHomeState) {
+                isLoading = true;
+              } else if (state is LoadingEndHomeState) {
+                isLoading = false;
+              } else if (state is FetchSelectPageState) {
+                page = state.pageNo;
+              }
             },
+            child: BlocBuilder(
+              cubit: bloc,
+              builder: (BuildContext context, state) {
+                // return LogInScreen();
+                return Stack(
+                  children: [
+                    Container(
+                      child: logoImage(
+                        image: bg_login,
+                        height: Scr.infinite,
+                        width: Scr.infinite,
+                      ),
+                    ),
+                    CustomDrawer(bloc: bloc, userData: userDetails),
+                    DashBoardScreen(pageNo: page),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Future<bool> _onBackPressed() {
+    bloc.add(FetchSelectPageEvent(pageNo: 0));
   }
 }
