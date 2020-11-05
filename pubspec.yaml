@@ -47,7 +47,9 @@ dependencies:
   url_launcher:
   ext_video_player:
   photo_view:
-
+  firebase_core:
+  firebase_analytics:
+  firebase_crashlytics:
 dev_dependencies:
   flutter_test:
     sdk: flutter

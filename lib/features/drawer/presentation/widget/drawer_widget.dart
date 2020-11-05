@@ -32,8 +32,8 @@ class _DrawerListState extends State<DrawerList> {
     getid();
   }
 
-  void getid() async {
-    userId = await AppPreference.getString(user_id);
+  void getid()  {
+    userId =  AppPreference.getString(user_id);
     print("user id--->${userId}");
   }
 
@@ -71,10 +71,10 @@ class _DrawerListState extends State<DrawerList> {
               label: photo_gallery,
               pageNo: 7),
           drawerItem(context: context, icon: ic_chart, label: chart, pageNo: 8),
-          drawerItem(
-              context: context, icon: ic_compare, label: compare, pageNo: 9),
-          /* drawerItem(
-              context: context, icon: ic_forum, label: forum, pageNo: 10),*/
+          /*drawerItem(
+              context: context, icon: ic_compare, label: compare, pageNo: 9),*/
+           drawerItem(
+              context: context, icon: ic_forum, label: forum, pageNo: 10),
           drawerItem(
               context: context, icon: ic_feedback, label: feedback, pageNo: 11),
           drawerItem(

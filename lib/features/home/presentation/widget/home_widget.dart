@@ -55,6 +55,13 @@ Widget logoImage({String image, double height, double width}) => Image(
       fit: BoxFit.fill,
     );
 
+Widget animatingLogoImage({String image, double height, double width}) => Image(
+  image: assetsImage(image),
+  height: height,
+  width: width,
+  fit: BoxFit.fill,
+);
+
 Widget animatorLogo() => Animator<double>(
       tween: Tween<double>(begin: Scr.screenHeight * 0.17, end: Scr.screenHeight * 0.2),
       cycles: 0,
@@ -64,8 +71,9 @@ Widget animatorLogo() => Animator<double>(
           width: animatorState.value * 1.5,
           child: Opacity(
             opacity: 1,
-            child: logoImage(
-              image: appLogo,
+            child: Image(
+              image: assetsImage(appLogo),
+              fit: BoxFit.contain,
             ),
           ),
         ),

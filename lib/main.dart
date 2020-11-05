@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 
 import 'package:device_info/device_info.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/dashboard/presentation/pages/dashboard_screen.dart';
 import 'package:way2fitlife/features/drawer/presentation/pages/drawer_screen.dart';
@@ -39,6 +41,7 @@ setUpAll() async {
   AppPreference.init();
   String deviceToken = await _getToken();
   AppPreference.set(device_token, deviceToken);
+  Firebase.initializeApp();
   userId = AppPreference.getString(user_id);
 }
 
@@ -53,6 +56,33 @@ Future<void> main() async {
     ),
   );
 }
+
+/*class FirebaseInit extends StatelessWidget {
+  // Create the initialization Future outside of `build`:
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+       *//* if (snapshot.hasError) {
+          return SomethingWentWrong();
+        }*//*
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return userId == null ? LogInScreen() : MyApp();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return screenProgressIndicator;
+      },
+    );
+  }
+}*/
 
 class MyApp extends StatefulWidget {
   @override
