@@ -37,11 +37,11 @@ String userId = '';
 
 setUpAll() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   initGetServiceLocator();
   AppPreference.init();
   String deviceToken = await _getToken();
   AppPreference.set(device_token, deviceToken);
-  Firebase.initializeApp();
   userId = AppPreference.getString(user_id);
 }
 
