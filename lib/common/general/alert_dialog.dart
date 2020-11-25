@@ -42,9 +42,26 @@ void logoutAlertDialog(BuildContext context) {
           child: labels(text: "Cancel", color: theme),
         ),
         FlatButton(
-          onPressed: ()  {
-             logOut(context);
+          onPressed: () {
+            logOut(context);
           },
+          child: labels(text: "Ok", color: theme),
+        ),
+      ],
+    ),
+  );
+}
+
+void internetAlertDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    child: AlertDialog(
+      shape: roundedRectangleBorder(radius: 15),
+      title: labels(text: "way2fitlife", color: theme, textAlign: TextAlign.start),
+      content: labels(text: "No internet connection available..", textAlign: TextAlign.start),
+      actions: [
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
           child: labels(text: "Ok", color: theme),
         ),
       ],

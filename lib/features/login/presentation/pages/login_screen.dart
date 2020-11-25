@@ -1,8 +1,10 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
@@ -11,18 +13,48 @@ import 'package:way2fitlife/features/login/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/features/login/presentation/widget/login_widget.dart';
 import 'package:way2fitlife/features/register_page/presentation/pages/register.dart';
 import 'package:way2fitlife/main.dart';
+import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/text_style.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
-class LogInScreen extends StatelessWidget {
+class LogInScreen extends StatefulWidget {
+  @override
+  _LogInScreenState createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
   Bloc bloc = getIt<LogInBloc>();
 
   bool buttonStatus = false;
+
   String emailMsg = "Please Enter your Email";
+
   String passMsg = "Please Enter your Password";
+
   bool isLoading = false;
+  MyConnectivity _connectivity = MyConnectivity.instance;
+
+  @override
+  void initState() {
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) async {
+      switch (source.keys.toList()[0]) {
+        case ConnectivityResult.none:
+          print(" * * * * * * * * Offline");
+          await internetAlertDialog(context);
+          break;
+        case ConnectivityResult.mobile:
+          print(" * * * * * * * * Mobile: Online");
+          break;
+        case ConnectivityResult.wifi:
+          print(" * * * * * * * * WiFi: Online");
+          break;
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +96,7 @@ class LogInScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         skipButton(context),
-                        Container(
-                            height: Scr.screenHeight * 0.25,
-                            child: animatorLogo()),
+                        Container(height: Scr.screenHeight * 0.25, child: animatorLogo()),
                         LogInCard(
                           context,
                           bloc: bloc,
@@ -76,23 +106,19 @@ class LogInScreen extends StatelessWidget {
                         ),
                         Align(
                           child: RichText(
-                            text: TextSpan(
-                                text: "Don't Have Account?   ",
-                                children: [
-                                  TextSpan(
-                                      text: "Register",
-                                      style: defaultHomeTextStyle(
-                                          color: headerColor, size: 18),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Register(),
-                                              ));
-                                        }),
-                                ]),
+                            text: TextSpan(text: "Don't Have Account?   ", children: [
+                              TextSpan(
+                                  text: "Register",
+                                  style: defaultHomeTextStyle(color: headerColor, size: 18),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Register(),
+                                          ));
+                                    }),
+                            ]),
                           ),
                         ),
                       ],

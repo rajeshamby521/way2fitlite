@@ -50,6 +50,8 @@ dependencies:
   firebase_core:
   firebase_analytics:
   firebase_crashlytics:
+  connectivity:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

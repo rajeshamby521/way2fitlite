@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
+import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
+import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/dashboard/presentation/pages/dashboard_screen.dart';
 import 'package:way2fitlife/features/drawer/presentation/pages/drawer_screen.dart';
@@ -14,6 +15,7 @@ import 'package:way2fitlife/features/home/presentation/widget/home_widget.dart';
 import 'package:way2fitlife/features/login/data/datamodel/login_model.dart';
 import 'package:way2fitlife/features/login/presentation/pages/login_screen.dart';
 import 'package:way2fitlife/network/api_strings.dart';
+import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
@@ -47,6 +49,7 @@ setUpAll() async {
 
 Future<void> main() async {
   await setUpAll();
+
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -68,9 +71,9 @@ Future<void> main() async {
       future: _initialization,
       builder: (context, snapshot) {
         // Check for errors
-       *//* if (snapshot.hasError) {
+       */ /* if (snapshot.hasError) {
           return SomethingWentWrong();
-        }*//*
+        }*/ /*
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
@@ -95,11 +98,27 @@ class _MyAppState extends State<MyApp> {
   bool isLoading = true;
   UserData userDetails = UserData();
 
+  MyConnectivity _connectivity = MyConnectivity.instance;
+
   @override
   void initState() {
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) async {
+      switch (source.keys.toList()[0]) {
+        case ConnectivityResult.none:
+          print(" * * * * * * * * Offline");
+          await internetAlertDialog(context);
+          break;
+        case ConnectivityResult.mobile:
+          print(" * * * * * * * * Mobile: Online");
+          break;
+        case ConnectivityResult.wifi:
+          print(" * * * * * * * * WiFi: Online");
+          break;
+      }
+    });
     if (AppPreference.getString(userData) != null) {
-      userDetails =
-          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+      userDetails = UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
     super.initState();
   }
@@ -113,8 +132,7 @@ class _MyAppState extends State<MyApp> {
     ]);
 
     if (AppPreference.getString(userData) != null) {
-      userDetails =
-          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+      userDetails = UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
     // bloc.add(FetchSelectPageEvent(pageNo: 0));
     return WillPopScope(
