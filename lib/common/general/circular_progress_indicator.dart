@@ -11,3 +11,14 @@ Widget screenProgressIndicator = Container(
     child: CircularProgressIndicator(),
   ),
 );
+
+Widget adLoader(){
+  return Container(
+    height: height,
+    width: width,
+    color: Colors.white10,
+    child: Center(
+      child: CircularProgressIndicator(semanticsLabel: "Ad Loading...",),
+    ),
+  );
+}

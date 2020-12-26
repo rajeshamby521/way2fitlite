@@ -189,7 +189,7 @@ class _AddWeightDataState extends State<AddWeightData> {
                       date: dateTime.toString(),
                       weight: weight.toString() ?? 60));
                   Navigator.pop(context);
-                  if (isInterstitalReady) interstitialAd.show();
+                  if (isInterstitialReady) interstitialAd.show();
                 },
               ),
             ],

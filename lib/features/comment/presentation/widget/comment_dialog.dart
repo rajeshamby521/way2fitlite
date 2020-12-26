@@ -6,6 +6,7 @@ import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
+import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/advertiesment/presentation/page/ad_manager.dart';
@@ -76,86 +77,88 @@ class _CommentDialogState extends State<CommentDialog> {
   }
 
   Widget addCommnet() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: labels(text: addCommentTxt, color: theme),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: icons(icon: Icons.close, color: theme),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: labels(text: addCommentTxt, color: theme),
               ),
-            ),
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.all(10.0),
-          margin: EdgeInsets.only(bottom: 20.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: red, width: 1),
+              Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: icons(icon: Icons.close, color: theme),
+                ),
+              ),
+            ],
           ),
-          child: NativeAdmob(
-            adUnitID: AdManager.nativeAdUnitId,
-            // numberAds: 3,
-            error: FacebookNativeAd(
-              placementId:
-                  "IMG_16_9_APP_INSTALL#2312433698835503_2964952163583650",
+          Container(
+            padding: EdgeInsets.all(10.0),
+            margin: EdgeInsets.only(bottom: 20.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: red, width: 1),
+            ),
+            child: NativeAdmob(
+              adUnitID: AdManager.nativeAdUnitId,
+              // numberAds: 3,
+        /*      error: FacebookNativeAd(
+                placementId:
+                    "IMG_16_9_APP_INSTALL#2312433698835503_2964952163583650",
 
-              adType: NativeAdType.NATIVE_AD,
-              width: double.infinity,
-              backgroundColor: Colors.blue,
-              titleColor: Colors.white,
-              descriptionColor: Colors.white,
-              buttonColor: Colors.deepPurple,
-              buttonTitleColor: Colors.white,
-              buttonBorderColor: Colors.white,
-              keepAlive: true,
-              //set true if you do not want adview to refresh on widget rebuild
-              keepExpandedWhileLoading: false,
-              // set false if you want to collapse the native ad view when the ad is loading
-              expandAnimationDuraion: 300,
-              listener: (result, value) {
-                print("facebooko native add $result-->$value");
+                adType: NativeAdType.NATIVE_AD,
+                width: double.infinity,
+                backgroundColor: Colors.blue,
+                titleColor: Colors.white,
+                descriptionColor: Colors.white,
+                buttonColor: Colors.deepPurple,
+                buttonTitleColor: Colors.white,
+                buttonBorderColor: Colors.white,
+                keepAlive: true,
+                //set true if you do not want adview to refresh on widget rebuild
+                keepExpandedWhileLoading: false,
+                // set false if you want to collapse the native ad view when the ad is loading
+                expandAnimationDuraion: 300,
+                listener: (result, value) {
+                  print("facebooko native add $result-->$value");
+                },
+              ),*/
+              controller: _controller,
+              type: NativeAdmobType.full,
+              options: NativeAdmobOptions(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              keyboardType: TextInputType.multiline,
+              controller: commentController,
+              onChanged: (val) {
+                comm_txt = val;
+                bloc.add(AddCommentBtnEvent(commnet: comm_txt));
               },
+              decoration: InputDecoration(
+                hintText: 'Comment',
+                border: OutlineInputBorder(),
+              ),
+              minLines: 2,
+              maxLines: 3,
             ),
-            controller: _controller,
-            type: NativeAdmobType.full,
-            options: NativeAdmobOptions(),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            keyboardType: TextInputType.multiline,
-            controller: commentController,
-            onChanged: (val) {
-              comm_txt = val;
-              bloc.add(AddCommentBtnEvent(commnet: comm_txt));
-            },
-            decoration: InputDecoration(
-              hintText: 'Comment',
-              border: OutlineInputBorder(),
-            ),
-            minLines: 2,
-            maxLines: 3,
-          ),
-        ),
-        submitButton(
-            text: add,
-            textColor: white,
-            disable: !btnStatus,
-            onPressed: () {
-              print(commentController.text);
-              bloc.add(AddCommentClickEvent(commnet: commentController.text));
-            }),
-      ],
+          submitButton(
+              text: add,
+              textColor: white,
+              disable: !btnStatus,
+              onPressed: () {
+                print(commentController.text);
+                bloc.add(AddCommentClickEvent(commnet: commentController.text));
+              }),
+        ],
+      ),
     );
   }
 }

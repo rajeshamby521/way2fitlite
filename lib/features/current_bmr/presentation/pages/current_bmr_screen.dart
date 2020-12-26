@@ -161,7 +161,7 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                                           gender: gender,
                                         ),
                                       );
-                                      if (isInterstitalReady)
+                                      if (isInterstitialReady)
                                         interstitialAd.show();
                                     }),
                               ],

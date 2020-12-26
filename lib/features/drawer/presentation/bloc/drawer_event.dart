@@ -5,3 +5,8 @@ class FetchSelectPageEvent extends DrawerEvent {
 
   FetchSelectPageEvent({this.pageNo});
 }
+
+
+class ShowAdEvent extends DrawerEvent{
+  ShowAdEvent();
+}

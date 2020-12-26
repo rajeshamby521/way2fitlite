@@ -20,3 +20,7 @@ class FetchSelectPageState extends DrawerState {
 
   FetchSelectPageState({this.pageNo});
 }
+
+class ShowAdState extends DrawerState{
+  ShowAdState();
+}

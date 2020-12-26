@@ -1,4 +1,4 @@
-package com.lva.way2fitlife
+package com.qt.way2fitlife
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -234,7 +234,7 @@ class _AddPhotoDataState extends State<AddPhotoData> {
                           image: image,
                         ),
                       );
-                      if (isInterstitalReady) interstitialAd.show();
+                      if (isInterstitialReady) interstitialAd.show();
                       Navigator.pop(context);
                     }
                   },

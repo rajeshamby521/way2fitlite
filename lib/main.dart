@@ -5,6 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
@@ -38,12 +39,17 @@ Future<String> _getToken() async {
 String userId = '';
 
 InterstitialAd interstitialAd;
-bool isInterstitalReady;
+BannerAd _bannerAd;
+bool isInterstitialReady = false;
+bool isBannerReady = false;
 
 Future<void> initAdMob() {
   FirebaseAdMob.instance.initialize(appId: AdManager.appId);
   // RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("2A7D8394FB6369ED56FE41B58EEBC898")
 }
+
+
+
 
 setUpAll() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,9 +58,12 @@ setUpAll() async {
   initAdMob();
   AppPreference.init();
 
+
   String deviceToken = await _getToken();
   AppPreference.set(device_token, deviceToken);
   userId = AppPreference.getString(user_id);
+
+
 }
 
 Future<void> main() async {
@@ -115,24 +124,31 @@ class _MyAppState extends State<MyApp> {
       userDetails =
           UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
+    initBannerAd();
+    loadBannerAd();
+
+    _initInterAd();
+    _loadInterstitialAd();
+
+    super.initState();
+  }
+
+  //_bannerAd.show(anchorType: AnchorType.bottom);
+  void _initInterAd() {
     interstitialAd = InterstitialAd(
       adUnitId: AdManager.interstitialAdUnitId,
       listener: _onInterstitialEvent,
     );
-
-    loadInterstitialAd();
-
-    super.initState();
   }
 
   void _onInterstitialEvent(MobileAdEvent event) {
     switch (event) {
       case MobileAdEvent.loaded:
-        isInterstitalReady = true;
+        isInterstitialReady = true;
         print("inter Loaded");
         break;
       case MobileAdEvent.failedToLoad:
-        isInterstitalReady = false;
+        isInterstitialReady = false;
         print("inter Failed to Loaded");
         break;
       case MobileAdEvent.closed:
@@ -141,19 +157,53 @@ class _MyAppState extends State<MyApp> {
         break;
       case MobileAdEvent.opened:
         print("inter opened");
-        interstitialAd = InterstitialAd(
-          adUnitId: AdManager.interstitialAdUnitId,
-          listener: _onInterstitialEvent,
-        );
-        loadInterstitialAd();
+        _initInterAd();
+        _loadInterstitialAd();
         break;
       default:
       //do nothing
     }
   }
 
-  void loadInterstitialAd() {
+  void _loadInterstitialAd() {
     interstitialAd.load();
+  }
+
+  void initBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: AdManager.bannerAdUnitId,
+      size: AdSize.banner,
+      listener: onBannerAdEvent,
+    );
+  }
+
+  void loadBannerAd() {
+    _bannerAd.load();
+  }
+
+  void onBannerAdEvent(MobileAdEvent event) {
+
+    switch (event) {
+      case MobileAdEvent.loaded:
+        if(!isBannerReady)bloc.add(ShowAdEvent());
+        isBannerReady = true;
+        print("BannerAd Loaded");
+        break;
+      case MobileAdEvent.failedToLoad:
+        isBannerReady = false;
+        print("BannerAd Failed to Loaded");
+        break;
+      default:
+      //do nothing
+    }
+  }
+
+
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   @override
@@ -183,24 +233,45 @@ class _MyAppState extends State<MyApp> {
                 isLoading = false;
               } else if (state is FetchSelectPageState) {
                 page = state.pageNo;
+              } else if(state is ShowAdState){
+               if(isBannerReady) _bannerAd.show(anchorType: AnchorType.bottom,);
               }
             },
             child: BlocBuilder(
               cubit: bloc,
               builder: (BuildContext context, state) {
                 // return LogInScreen();
-                return Stack(
-                  children: [
-                    Container(
-                      child: logoImage(
-                        image: bg_login,
-                        height: Scr.infinite,
-                        width: Scr.infinite,
+                return Container(
+                  height: Scr.infinite,
+                  width: Scr.infinite,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage(bg_login,
+                      )
+                    )
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          children: [
+                           /* Container(
+                              child: logoImage(
+                                image: bg_login,
+                                height: Scr.infinite,
+                                width: Scr.infinite,
+                              ),
+                            ),*/
+                            CustomDrawer(bloc: bloc, userData: userDetails),
+                            DashBoardScreen(pageNo: page),
+                          ],
+                        ),
                       ),
-                    ),
-                    CustomDrawer(bloc: bloc, userData: userDetails),
-                    DashBoardScreen(pageNo: page),
-                  ],
+                      if(isBannerReady)Container(height: 50,color: transparent,),
+                    ],
+                  ),
                 );
               },
             ),

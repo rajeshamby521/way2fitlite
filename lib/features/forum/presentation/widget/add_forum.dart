@@ -208,7 +208,7 @@ class _AddForumState extends State<AddForum> {
                   forum_topic: topicController.text,
                   description: descController.text,
                 ));
-                if (isInterstitalReady) interstitialAd.show();
+                if (isInterstitialReady) interstitialAd.show();
               }),
         ),
       ],

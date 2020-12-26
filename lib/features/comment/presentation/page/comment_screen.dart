@@ -15,6 +15,8 @@ import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
+import '../../../../main.dart';
+
 class CommentScreen extends StatefulWidget {
   String forum_id;
 
@@ -69,6 +71,9 @@ class _CommentScreenState extends State<CommentScreen> {
         cubit: bloc,
         builder: (context, state) {
           return Scaffold(
+            persistentFooterButtons: [
+              if(isBannerReady)Container(height: 50,color: transparent,),
+            ],
             appBar: AppBar(
               title: Text(Forum),
               backgroundColor: headerColor,
@@ -123,6 +128,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       ? circularProgressIndicator
                                       : */
                                       _createListView()),
+
                         ],
                       ),
               ),

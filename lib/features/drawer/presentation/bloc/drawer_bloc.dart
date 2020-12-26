@@ -18,6 +18,8 @@ class DrawerBloc extends Bloc<DrawerEvent, DrawerState> {
         (error) => ErrorState(error.message),
         (success) => FetchSelectPageState(pageNo: success),
       );
+    }else if(event is ShowAdEvent){
+      yield ShowAdState();
     }
   }
 }

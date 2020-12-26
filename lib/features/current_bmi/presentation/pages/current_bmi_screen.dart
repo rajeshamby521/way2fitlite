@@ -168,7 +168,7 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
                   ),
                 );
 
-                if (isInterstitalReady) interstitialAd.show();
+                if (isInterstitialReady) interstitialAd.show();
               },
             ),
           ],
