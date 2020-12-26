@@ -35,6 +35,7 @@ class _WeightSheetScreenState extends State<WeightSheetScreen> {
   @override
   void initState() {
     bloc.add(GetWeightSheetEvent(offSet: offSet));
+
     super.initState();
   }
 

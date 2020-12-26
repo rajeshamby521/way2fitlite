@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:959568019358:android:b09c232ad6680b84dd608f",
+        "android_client_info": {
+          "package_name": "com.lva.way2fitlife"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959568019358-8ug1iiin1lr7op3o1rpf7tbklb3dsdnh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9HecRc0Q7JhpZ6y5nYPrV-TWQovKHVn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959568019358-8ug1iiin1lr7op3o1rpf7tbklb3dsdnh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:959568019358:android:ca87d22a9e0c4b54dd608f",
         "android_client_info": {
           "package_name": "com.way2fitlife"

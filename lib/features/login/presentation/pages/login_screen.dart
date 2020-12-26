@@ -16,6 +16,7 @@ import 'package:way2fitlife/main.dart';
 import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
+import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/ui_helper/text_style.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
@@ -34,25 +35,10 @@ class _LogInScreenState extends State<LogInScreen> {
   String passMsg = "Please Enter your Password";
 
   bool isLoading = false;
-  MyConnectivity _connectivity = MyConnectivity.instance;
 
   @override
-  void initState() {
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) async {
-      switch (source.keys.toList()[0]) {
-        case ConnectivityResult.none:
-          print(" * * * * * * * * Offline");
-          await internetAlertDialog(context);
-          break;
-        case ConnectivityResult.mobile:
-          print(" * * * * * * * * Mobile: Online");
-          break;
-        case ConnectivityResult.wifi:
-          print(" * * * * * * * * WiFi: Online");
-          break;
-      }
-    });
+  Future<void> initState() {
+    MyConnectivity.checkInternet(context);
     super.initState();
   }
 
@@ -112,11 +98,14 @@ class _LogInScreenState extends State<LogInScreen> {
                                   style: defaultHomeTextStyle(color: headerColor, size: 18),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Register(),
-                                          ));
+                                      (MyConnectivity.internetStatus == internet_connected)
+                                          ? Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => Register(),
+                                              ),
+                                            )
+                                          : internetAlertDialog(context);
                                     }),
                             ]),
                           ),

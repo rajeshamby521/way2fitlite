@@ -7,6 +7,7 @@ import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/current_bmr/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/features/current_bmr/presentation/widget/current_bmr_widget.dart';
+import 'package:way2fitlife/main.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
@@ -23,9 +24,6 @@ class CurrentBMRScreen extends StatefulWidget {
 }
 
 class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
-  // TextEditingController txtAgeController = TextEditingController();
-  // TextEditingController txtWeightController = TextEditingController();
-  // TextEditingController txtHeightController = TextEditingController();
   double ageYear = 25;
   double weightKg = 60;
   double heightCm = 150;
@@ -98,18 +96,6 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                             ),
                             child: Column(
                               children: [
-                                // textFieldBuilder(
-                                //     controller: txtAgeController,
-                                //     hint: age_year,
-                                //     suffix: ic_birthdate),
-                                // textFieldBuilder(
-                                //     controller: txtWeightController,
-                                //     hint: weight_kg,
-                                //     suffix: ic_weight),
-                                // textFieldBuilder(
-                                //     controller: txtHeightController,
-                                //     hint: height_cm,
-                                //     suffix: ic_height),
                                 verticalSpace(Scr.screenHeight * 0.02),
                                 Row(
                                   children: [
@@ -165,16 +151,19 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
                                 ),
                                 verticalSpace(Scr.screenHeight * 0.02),
                                 raisedButton(
-                                  label: calculate,
-                                  onPressed: () => bloc.add(
-                                    CalculateBMREvent(
-                                      age: ageYear,
-                                      weight: weightKg,
-                                      height: heightCm,
-                                      gender: gender,
-                                    ),
-                                  ),
-                                ),
+                                    label: calculate,
+                                    onPressed: () {
+                                      bloc.add(
+                                        CalculateBMREvent(
+                                          age: ageYear,
+                                          weight: weightKg,
+                                          height: heightCm,
+                                          gender: gender,
+                                        ),
+                                      );
+                                      if (isInterstitalReady)
+                                        interstitialAd.show();
+                                    }),
                               ],
                             ),
                           ),
@@ -329,7 +318,7 @@ class _CurrentBMRScreenState extends State<CurrentBMRScreen> {
     );
   }
 
-  /*show(context) => showBottomSheet(
+/*show(context) => showBottomSheet(
       context: context,
       builder: (context) {
         return Container(

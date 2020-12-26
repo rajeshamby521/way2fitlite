@@ -12,6 +12,7 @@ import 'package:way2fitlife/utils/screen_utils.dart';
 
 import '../../../../common/general/appbar_widget.dart';
 import '../../../../common/general_widget.dart';
+import '../../../../main.dart';
 import '../../../../ui_helper/images.dart';
 import '../bloc/current_bmi_bloc.dart';
 import '../bloc/current_bmi_event.dart';
@@ -159,12 +160,16 @@ class _CurrentBMIScreenState extends State<CurrentBMIScreen> {
             verticalSpace(Scr.screenHeight * 0.03),
             raisedButton(
               label: calculate,
-              onPressed: () => bloc.add(
-                BmiDataFetchEvent(
-                  weight: weightKg,
-                  height: heightCm,
-                ),
-              ),
+              onPressed: () {
+                bloc.add(
+                  BmiDataFetchEvent(
+                    weight: weightKg,
+                    height: heightCm,
+                  ),
+                );
+
+                if (isInterstitalReady) interstitialAd.show();
+              },
             ),
           ],
         ),

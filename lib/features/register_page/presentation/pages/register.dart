@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general/field_and_label.dart';
 import 'package:way2fitlife/common/general_widget.dart';
@@ -15,9 +16,11 @@ import 'package:way2fitlife/features/register_page/presentation/bloc/register_ev
 import 'package:way2fitlife/features/register_page/presentation/bloc/register_state.dart';
 import 'package:way2fitlife/features/register_page/presentation/widget/button_builder.dart';
 import 'package:way2fitlife/main.dart';
+import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
+import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
 RegisterInitState initSta = RegisterInitState(status: false);
@@ -114,8 +117,7 @@ class _RegisterState extends State<Register> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: assetsImage(bg_login), fit: BoxFit.cover)),
+                    image: DecorationImage(image: assetsImage(bg_login), fit: BoxFit.cover)),
               ),
               SingleChildScrollView(
                 child: Stack(
@@ -127,10 +129,8 @@ class _RegisterState extends State<Register> {
                         child: BlocListener<RegisterBloc, RegisterState>(
                           cubit: bloc,
                           listener: (context, state) {
-                            if (state is RegisterLodingBeginState)
-                              _saving = true;
-                            if (state is RegisterLodingEndState)
-                              _saving = false;
+                            if (state is RegisterLodingBeginState) _saving = true;
+                            if (state is RegisterLodingEndState) _saving = false;
                             if (state is RegisterInitState) {
                               unameMsg = state.unameMsg;
                               heightMsg = state.heightMsg;
@@ -153,8 +153,8 @@ class _RegisterState extends State<Register> {
                                 );
                                 return null;
                               } else {
-                                return Scaffold.of(context).showSnackBar(
-                                    SnackBar(content: Text(state.model.msg)));
+                                return Scaffold.of(context)
+                                    .showSnackBar(SnackBar(content: Text(state.model.msg)));
                               }
                             } else {
                               return Stack(
@@ -271,8 +271,7 @@ class _RegisterState extends State<Register> {
             left: 10,
             right: 10,
           ),
-          padding:
-              const EdgeInsets.only(left: 10, top: 100, right: 10, bottom: 20),
+          padding: const EdgeInsets.only(left: 10, top: 100, right: 10, bottom: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
             color: Colors.white,
@@ -383,8 +382,7 @@ class _RegisterState extends State<Register> {
               InkWell(
                 onTap: () => _selectDate(context),
                 child: FieldAndLabel(
-                  intialValue:
-                      DateFormat('dd-MM-yyyy').format(selectedDate.toLocal()),
+                  intialValue: DateFormat('dd-MM-yyyy').format(selectedDate.toLocal()),
                   icon: Image.asset(
                     ic_birthdate,
                     width: 28,
@@ -621,18 +619,21 @@ class _RegisterState extends State<Register> {
   }
 
   void sendData() {
-    bloc.add(RegisterSendDataEvent(
-        uname: usernameController.text,
-        gender: _gender.toString(),
-        height: heightController.text,
-        weight: weightController.text,
-        birthdate: DateFormat('dd-MM-yyyy').format(selectedDate),
-        email: emailController.text,
-        mobile: mobileController.text,
-        activityBuilder: _value,
-        pass: passController.text,
-        cpass: cPassController.text,
-        image: image));
+    (MyConnectivity.internetStatus == internet_connected)
+        ? bloc.add(RegisterSendDataEvent(
+            uname: usernameController.text,
+            gender: _gender.toString(),
+            height: heightController.text,
+            weight: weightController.text,
+            birthdate: DateFormat('dd-MM-yyyy').format(selectedDate),
+            email: emailController.text,
+            mobile: mobileController.text,
+            activityBuilder: _value,
+            pass: passController.text,
+            cpass: cPassController.text,
+            image: image))
+        : internetAlertDialog(context);
+    ;
   }
 
   Future<File> _imgFromCamera() async {
@@ -651,8 +652,7 @@ class _RegisterState extends State<Register> {
 
   Future<File> _imgFromGallery() async {
     File _img;
-    final pickedFile =
-        await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+    final pickedFile = await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
     setState(() {
       if (pickedFile != null)
         _img = File(pickedFile.path);

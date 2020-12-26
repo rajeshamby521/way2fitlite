@@ -1,10 +1,16 @@
+import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_admob/flutter_native_admob.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
+import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/date_time_format.dart';
 import 'package:way2fitlife/common/general_widget.dart';
+import 'package:way2fitlife/features/advertiesment/presentation/page/ad_manager.dart';
 import 'package:way2fitlife/features/weight_sheet/data/datamodel/weight_sheet_model.dart';
 import 'package:way2fitlife/features/weight_sheet/presentation/bloc/bloc.dart';
+import 'package:way2fitlife/main.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
@@ -56,19 +62,36 @@ Widget weightDataList(List<WeightDatum> list) {
   );
 }
 
-class AddWeightData extends StatelessWidget {
+class AddWeightData extends StatefulWidget {
   Bloc bloc;
 
   AddWeightData({this.bloc});
 
+  @override
+  _AddWeightDataState createState() => _AddWeightDataState();
+}
+
+class _AddWeightDataState extends State<AddWeightData> {
   DateTime dateTime = DateTime.now();
+
   double weight;
+
   bool isLoading = true;
+
+  final _controller = NativeAdmobController();
+
+  @override
+  void initState() {
+    super.initState();
+    FacebookAudienceNetwork.init(
+      testingId: "37b1da9d-b48c-4103-a393-2e095e734bd6", //optional
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      cubit: bloc,
+      cubit: widget.bloc,
       listener: (BuildContext context, state) {
         if (state is LoadingBeginHomeState)
           isLoading = true;
@@ -79,12 +102,47 @@ class AddWeightData extends StatelessWidget {
         else if (state is GetDateState) dateTime = state.dateTime;
       },
       child: BlocBuilder(
-        cubit: bloc,
+        cubit: widget.bloc,
         builder: (BuildContext context, state) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Container(
+                padding: EdgeInsets.all(10.0),
+                margin: EdgeInsets.only(bottom: 20.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: red, width: 1),
+                ),
+                child: NativeAdmob(
+                  adUnitID: AdManager.nativeAdUnitId,
+                  // numberAds: 3,
+                  error: FacebookNativeAd(
+                    placementId:
+                        "IMG_16_9_APP_INSTALL#2312433698835503_2964952163583650",
+
+                    adType: NativeAdType.NATIVE_AD,
+                    width: double.infinity,
+                    backgroundColor: Colors.blue,
+                    titleColor: Colors.white,
+                    descriptionColor: Colors.white,
+                    buttonColor: Colors.deepPurple,
+                    buttonTitleColor: Colors.white,
+                    buttonBorderColor: Colors.white,
+                    keepAlive: true,
+                    //set true if you do not want adview to refresh on widget rebuild
+                    keepExpandedWhileLoading: false,
+                    // set false if you want to collapse the native ad view when the ad is loading
+                    expandAnimationDuraion: 300,
+                    listener: (result, value) {
+                      print("facebooko native add $result-->$value");
+                    },
+                  ),
+                  controller: _controller,
+                  type: NativeAdmobType.full,
+                  options: NativeAdmobOptions(),
+                ),
+              ),
               InkWell(
                 child: decoratedContainer(
                   child: Padding(
@@ -104,7 +162,7 @@ class AddWeightData extends StatelessWidget {
                     firstDate: DateTime(1980, 1),
                     lastDate: DateTime.now(),
                   ).then((value) {
-                    bloc.add(GetDateEvent(
+                    widget.bloc.add(GetDateEvent(
                         dateTime: value == null ? DateTime.now() : value));
                   });
                 },
@@ -117,7 +175,7 @@ class AddWeightData extends StatelessWidget {
                 endValue: 150,
                 initialItem: 50,
                 onItemChanged: (val) {
-                  bloc.add(GetWeightEvent(
+                  widget.bloc.add(GetWeightEvent(
                       weight: double.parse((val + 10).toString())));
                 },
               ),
@@ -127,10 +185,11 @@ class AddWeightData extends StatelessWidget {
                 textColor: white,
                 disable: false,
                 onPressed: () {
-                  bloc.add(SetWeightSheetEvent(
+                  widget.bloc.add(SetWeightSheetEvent(
                       date: dateTime.toString(),
                       weight: weight.toString() ?? 60));
                   Navigator.pop(context);
+                  if (isInterstitalReady) interstitialAd.show();
                 },
               ),
             ],

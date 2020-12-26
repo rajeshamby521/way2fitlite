@@ -5,6 +5,7 @@ import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/drawer/presentation/widget/drawer_widget.dart';
 import 'package:way2fitlife/features/login/data/datamodel/login_model.dart';
 import 'package:way2fitlife/features/update_user_data/presentation/page/update_user_data.dart';
+import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
@@ -49,20 +50,20 @@ class CustomDrawer extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
-                            if (userData.profileImage != null)
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ProfileImage(
-                                    image: userData.profileImage,
+                            if (MyConnectivity.internetStatus == internet_connected) {
+                              if (userData.profileImage != null)
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ProfileImage(
+                                      image: userData.profileImage,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                            } else
+                              internetAlertDialog(context);
                           },
                         ),
-                        title: labels(
-                            text: userData.username ?? guest,
-                            color: theme,
-                            size: 14),
+                        title: labels(text: userData.username ?? guest, color: theme, size: 14),
                         subtitle: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -80,19 +81,17 @@ class CustomDrawer extends StatelessWidget {
                             ),
                           ],
                         ),
-                        onTap: () =>
-                            userData.username ?? noLoginAlertDialog(context),
+                        onTap: () => userData.username ?? noLoginAlertDialog(context),
                       ),
                     ),
                     if (userData.userId != null)
                       IconButton(
-                        icon: icons(
-                            icon: Icons.edit,
-                            color: iconColor,
-                            size: height * 0.03),
+                        icon: icons(icon: Icons.edit, color: iconColor, size: height * 0.03),
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => UpdateUserData()));
+                          (MyConnectivity.internetStatus == internet_connected)
+                              ? Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) => UpdateUserData()))
+                              : internetAlertDialog(context);
                         },
                       )
                   ],

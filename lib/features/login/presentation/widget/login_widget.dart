@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
 import 'package:way2fitlife/common/general/field_and_label.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/forget_password/presentation/page/forgot_password_screen.dart';
 import 'package:way2fitlife/features/login/presentation/bloc/bloc.dart';
 import 'package:way2fitlife/main.dart';
+import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/ui_helper/text_style.dart';
@@ -72,8 +74,7 @@ class LogInCard extends StatelessWidget {
                 enabled: true,
                 onChanged: (value) {
                   email = value;
-                  bloc.add(GetLogInButtonStatusEvent(
-                      email: email, password: password));
+                  bloc.add(GetLogInButtonStatusEvent(email: email, password: password));
                 },
               ),
               verticalSpace(10),
@@ -90,8 +91,7 @@ class LogInCard extends StatelessWidget {
                 enabled: true,
                 onChanged: (value) {
                   password = value;
-                  bloc.add(GetLogInButtonStatusEvent(
-                      email: email, password: password));
+                  bloc.add(GetLogInButtonStatusEvent(email: email, password: password));
                 },
               ),
               GestureDetector(
@@ -113,12 +113,14 @@ class LogInCard extends StatelessWidget {
                 text: login,
                 textColor: white,
                 disable: !buttonStatus,
-                onPressed: () {
+                onPressed: () async {
                   FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
-                  bloc.add(GetLogInEvent(email: email, password: password));
+                  (MyConnectivity.internetStatus == internet_connected)
+                      ? bloc.add(GetLogInEvent(email: email, password: password))
+                      : internetAlertDialog(context);
                 },
               )
             ],

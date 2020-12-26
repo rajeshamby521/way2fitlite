@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/dashboard/presentation/pages/dashboard_screen.dart';
 import 'package:way2fitlife/features/drawer/presentation/pages/drawer_screen.dart';
@@ -22,6 +21,7 @@ import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/app_preference.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
+import 'features/advertiesment/presentation/page/ad_manager.dart';
 import 'features/drawer/presentation/bloc/bloc.dart';
 
 Future<String> _getToken() async {
@@ -37,11 +37,21 @@ Future<String> _getToken() async {
 
 String userId = '';
 
+InterstitialAd interstitialAd;
+bool isInterstitalReady;
+
+Future<void> initAdMob() {
+  FirebaseAdMob.instance.initialize(appId: AdManager.appId);
+  // RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("2A7D8394FB6369ED56FE41B58EEBC898")
+}
+
 setUpAll() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   initGetServiceLocator();
+  initAdMob();
   AppPreference.init();
+
   String deviceToken = await _getToken();
   AppPreference.set(device_token, deviceToken);
   userId = AppPreference.getString(user_id);
@@ -98,29 +108,52 @@ class _MyAppState extends State<MyApp> {
   bool isLoading = true;
   UserData userDetails = UserData();
 
-  MyConnectivity _connectivity = MyConnectivity.instance;
-
   @override
   void initState() {
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) async {
-      switch (source.keys.toList()[0]) {
-        case ConnectivityResult.none:
-          print(" * * * * * * * * Offline");
-          await internetAlertDialog(context);
-          break;
-        case ConnectivityResult.mobile:
-          print(" * * * * * * * * Mobile: Online");
-          break;
-        case ConnectivityResult.wifi:
-          print(" * * * * * * * * WiFi: Online");
-          break;
-      }
-    });
+    MyConnectivity.checkInternet(context);
     if (AppPreference.getString(userData) != null) {
-      userDetails = UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+      userDetails =
+          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
+    interstitialAd = InterstitialAd(
+      adUnitId: AdManager.interstitialAdUnitId,
+      listener: _onInterstitialEvent,
+    );
+
+    loadInterstitialAd();
+
     super.initState();
+  }
+
+  void _onInterstitialEvent(MobileAdEvent event) {
+    switch (event) {
+      case MobileAdEvent.loaded:
+        isInterstitalReady = true;
+        print("inter Loaded");
+        break;
+      case MobileAdEvent.failedToLoad:
+        isInterstitalReady = false;
+        print("inter Failed to Loaded");
+        break;
+      case MobileAdEvent.closed:
+        print("inter closed");
+        //do nothing
+        break;
+      case MobileAdEvent.opened:
+        print("inter opened");
+        interstitialAd = InterstitialAd(
+          adUnitId: AdManager.interstitialAdUnitId,
+          listener: _onInterstitialEvent,
+        );
+        loadInterstitialAd();
+        break;
+      default:
+      //do nothing
+    }
+  }
+
+  void loadInterstitialAd() {
+    interstitialAd.load();
   }
 
   @override
@@ -132,7 +165,8 @@ class _MyAppState extends State<MyApp> {
     ]);
 
     if (AppPreference.getString(userData) != null) {
-      userDetails = UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+      userDetails =
+          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
     }
     // bloc.add(FetchSelectPageEvent(pageNo: 0));
     return WillPopScope(

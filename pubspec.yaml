@@ -47,14 +47,19 @@ dependencies:
   url_launcher:
   ext_video_player:
   photo_view:
-  firebase_core:
-  firebase_analytics:
-  firebase_crashlytics:
+  firebase_core: ^0.5.3
+  firebase_analytics: ^6.3.0
+  firebase_crashlytics: ^0.2.4
   connectivity:
+  google_fonts: 0.3.9
+  firebase_admob:
+  flutter_native_admob:
+  facebook_audience_network:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  change_app_package_name: 0.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

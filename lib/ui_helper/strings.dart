@@ -15,6 +15,10 @@ const String forum = "Forum";
 const String feedback = "Feedback";
 const String share_app = "Share App";
 const String logout = "Log Out";
+
+//ad
+const String ad = "AD";
+
 const String bmr = "BMR";
 const String bmi = "BMI";
 //new
@@ -135,3 +139,6 @@ const String addCommentTxt = "Add Comment";
 const String addFeedBack = "Add FeedBack";
 const String forgotPasswordTxt = "Forgot Password";
 const String enter_email = "Enter email";
+
+const String no_internet = "No InterNet Connectivity";
+const String internet_connected = "InterNet Connectivity";
