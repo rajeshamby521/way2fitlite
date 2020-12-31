@@ -41,10 +41,26 @@ class _AddForumState extends State<AddForum> {
   String desc = '';
 
   final _controller = NativeAdmobController();
+  bool adLoaded = true;
 
   @override
   void initState() {
     super.initState();
+    _controller.stateChanged.listen((event) {
+      /*   if(event == AdLoadState.loading){
+        adLoaded = false;
+      }else*/ if(event == AdLoadState.loadCompleted){
+        adLoaded = true;
+        setState(() {
+
+        });
+      }else if(event == AdLoadState.loadError){
+        adLoaded = false;
+        setState(() {
+
+        });
+      }
+    });
     FacebookAudienceNetwork.init(
       testingId: "b9f2908b-1a6b-4a5b-b862-ded7ce289e41",
     );
@@ -126,18 +142,15 @@ class _AddForumState extends State<AddForum> {
           ],
         ),
         Container(
-          height: 300,
+          height: adLoaded ? 350: 0,
           padding: EdgeInsets.all(10.0),
           margin: EdgeInsets.only(bottom: 20.0),
           decoration: BoxDecoration(
-            border: Border.all(color: red, width: 1),
+            border: Border.all(color: adLoaded ?red :white, width: adLoaded ? 1: 0),
           ),
           child: NativeAdmob(
             adUnitID: AdManager.nativeAdUnitId,
-            error: Container(
-              height: 0,
-              width: 0,
-            ),
+
             // numberAds: 3,
             // error: FacebookNativeAd(
             //   placementId:

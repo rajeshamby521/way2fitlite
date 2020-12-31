@@ -33,10 +33,26 @@ class _CommentDialogState extends State<CommentDialog> {
 
   TextEditingController commentController = TextEditingController();
   final _controller = NativeAdmobController();
+  bool adLoaded = true;
 
   @override
   void initState() {
     super.initState();
+    _controller.stateChanged.listen((event) {
+      /*   if(event == AdLoadState.loading){
+        adLoaded = false;
+      }else*/ if(event == AdLoadState.loadCompleted){
+        adLoaded = true;
+        setState(() {
+
+        });
+      }else if(event == AdLoadState.loadError){
+        adLoaded = false;
+        setState(() {
+
+        });
+      }
+    });
     bloc.add(AddCommentBtnEvent(commnet: comm_txt));
   }
 
@@ -96,19 +112,14 @@ class _CommentDialogState extends State<CommentDialog> {
             ],
           ),
           Container(
-            height: 350,
+            height: adLoaded ? 350: 0,
             padding: EdgeInsets.all(10.0),
             margin: EdgeInsets.only(bottom: 20.0),
             decoration: BoxDecoration(
-              border: Border.all(color: red, width: 1),
+              border: Border.all(color: adLoaded ?red :white, width: adLoaded ? 1: 0),
             ),
             child: NativeAdmob(
               adUnitID: AdManager.nativeAdUnitId,
-              error: Container(
-                height: 0,
-                width: 0,
-              ),
-              // numberAds: 3,
               /*      error: FacebookNativeAd(
                 placementId:
                     "IMG_16_9_APP_INSTALL#2312433698835503_2964952163583650",

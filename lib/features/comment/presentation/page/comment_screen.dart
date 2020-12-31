@@ -71,27 +71,30 @@ class _CommentScreenState extends State<CommentScreen> {
         cubit: bloc,
         builder: (context, state) {
           return Scaffold(
-            persistentFooterButtons: [
+      /*      persistentFooterButtons: [
               if (isBannerReady)
                 Container(
                   height: 30,
                   color: transparent,
                 ),
-            ],
+            ],*/
             appBar: AppBar(
               title: Text(Forum),
               backgroundColor: headerColor,
             ),
-            floatingActionButton: extendedFloatingButton(
-              context: context,
-              bloc: bloc,
-              icon: Icons.add,
-              label: add,
-              backgroundColor: headerColor,
-              iconLabelColor: white,
-              dialogContent: CommentDialog(
+            floatingActionButton: Padding(
+              padding: EdgeInsets.only(bottom: isBannerReady ? 60.0: 0.0),
+              child: extendedFloatingButton(
+                context: context,
                 bloc: bloc,
-                forum_id: widget.forum_id,
+                icon: Icons.add,
+                label: add,
+                backgroundColor: headerColor,
+                iconLabelColor: white,
+                dialogContent: CommentDialog(
+                  bloc: bloc,
+                  forum_id: widget.forum_id,
+                ),
               ),
             ),
             body: SafeArea(
@@ -132,6 +135,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                       ? circularProgressIndicator
                                       : */
                                       _createListView()),
+                          if (isBannerReady)
+                            Container(
+                              height: 54,
+                              color: transparent,
+                            ),
+
                         ],
                       ),
               ),

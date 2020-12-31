@@ -48,9 +48,6 @@ Future<void> initAdMob() {
   // RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("2A7D8394FB6369ED56FE41B58EEBC898")
 }
 
-
-
-
 setUpAll() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -58,12 +55,9 @@ setUpAll() async {
   initAdMob();
   AppPreference.init();
 
-
   String deviceToken = await _getToken();
   AppPreference.set(device_token, deviceToken);
   userId = AppPreference.getString(user_id);
-
-
 }
 
 Future<void> main() async {

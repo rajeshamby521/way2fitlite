@@ -1,3 +1,4 @@
+import 'package:dartz/dartz_streaming.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,12 +78,28 @@ class _AddWeightDataState extends State<AddWeightData> {
   double weight;
 
   bool isLoading = true;
+  bool adLoaded = true;
 
   final _controller = NativeAdmobController();
 
   @override
   void initState() {
     super.initState();
+    _controller.stateChanged.listen((event) {
+   /*   if(event == AdLoadState.loading){
+        adLoaded = false;
+      }else*/ if(event == AdLoadState.loadCompleted){
+        adLoaded = true;
+        setState(() {
+
+        });
+      }else if(event == AdLoadState.loadError){
+        adLoaded = false;
+        setState(() {
+
+        });
+      }
+    });
     FacebookAudienceNetwork.init(
       testingId: "37b1da9d-b48c-4103-a393-2e095e734bd6", //optional
     );
@@ -109,19 +126,15 @@ class _AddWeightDataState extends State<AddWeightData> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 350,
+                height: adLoaded ? 350: 0,
                 padding: EdgeInsets.all(10.0),
                 margin: EdgeInsets.only(bottom: 20.0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: red, width: 1),
+                  border: Border.all(color: adLoaded ?red :white, width: adLoaded ? 1: 0),
                 ),
                 child: NativeAdmob(
                   adUnitID: AdManager.nativeAdUnitId,
                   // numberAds: 3,
-                  error: Container(
-                    height: 0,
-                    width: 0,
-                  ),
                   controller: _controller,
                   type: NativeAdmobType.full,
                   options: NativeAdmobOptions(),

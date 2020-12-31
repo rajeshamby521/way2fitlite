@@ -189,7 +189,6 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                       ),
-
                       //Already Login
                       Center(
                         child: Row(
@@ -532,7 +531,7 @@ class _RegisterState extends State<Register> {
                     : () {},
           ),
         ),
-        verticalSpace(100),
+
       ],
     );
     var l = new List<Widget>();

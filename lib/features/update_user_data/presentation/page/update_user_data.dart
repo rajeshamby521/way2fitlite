@@ -447,7 +447,7 @@ class _UpdateUserDataState extends State<UpdateUserData> {
             },
           ),
         ),
-        verticalSpace(100),
+        if(isBannerReady)  verticalSpace(110),
       ],
     );
     var l = new List<Widget>();

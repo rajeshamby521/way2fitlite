@@ -10,6 +10,7 @@ import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
 import '../../../../../../../common/general_widget.dart';
+import '../../../../../../../main.dart';
 
 class RichFoodDetailScreen extends StatefulWidget {
   final String foodId;
@@ -122,7 +123,7 @@ class _RichFoodDetailScreenState extends State<RichFoodDetailScreen> {
                       children: detailsData,
                     ),
                   ),
-            verticalSpace(100),
+            if(isBannerReady)  verticalSpace(65),
           ],
         ),
       ),
@@ -161,7 +162,7 @@ class _RichFoodDetailScreenState extends State<RichFoodDetailScreen> {
                   children: detailsData,
                 ),
               ),
-        verticalSpace(50),
+        if(isBannerReady)  verticalSpace(65),
       ],
     );
   }
