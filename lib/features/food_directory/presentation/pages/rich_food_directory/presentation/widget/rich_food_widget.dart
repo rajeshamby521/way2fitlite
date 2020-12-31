@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food_directory/data/data_model/rich_food_model.dart';
 import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food_directory/presentation/pages/rich_food_detail_screen.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget listItem({Datum data, Bloc bloc, BuildContext context}) {
   return InkWell(
@@ -53,7 +53,8 @@ Widget listItem({Datum data, Bloc bloc, BuildContext context}) {
               flex: 4,
             ),
             Expanded(
-              child: icons(icon: Icons.chevron_right, size: 50, color: iconColor),
+              child:
+                  icons(icon: Icons.chevron_right, size: 50, color: iconColor),
               flex: 1,
             )
           ],
@@ -66,8 +67,8 @@ Widget listItem({Datum data, Bloc bloc, BuildContext context}) {
       showModalBottomSheet(
         context: context,
         backgroundColor: white,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
         builder: (context) {
           return RichFoodDetailScreen(
             bloc: bloc,
@@ -98,6 +99,8 @@ Widget rowData({String label, String data}) => Row(
       children: [
         Expanded(child: labels(text: label, textAlign: TextAlign.end)),
         Text("  :  "),
-        Expanded(child: labels(text: data, color: iconColor, textAlign: TextAlign.start)),
+        Expanded(
+            child: labels(
+                text: data, color: iconColor, textAlign: TextAlign.start)),
       ],
     );

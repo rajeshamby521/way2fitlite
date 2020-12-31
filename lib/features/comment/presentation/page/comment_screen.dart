@@ -72,7 +72,11 @@ class _CommentScreenState extends State<CommentScreen> {
         builder: (context, state) {
           return Scaffold(
             persistentFooterButtons: [
-              if(isBannerReady)Container(height: 50,color: transparent,),
+              if (isBannerReady)
+                Container(
+                  height: 30,
+                  color: transparent,
+                ),
             ],
             appBar: AppBar(
               title: Text(Forum),
@@ -128,7 +132,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                       ? circularProgressIndicator
                                       : */
                                       _createListView()),
-
                         ],
                       ),
               ),

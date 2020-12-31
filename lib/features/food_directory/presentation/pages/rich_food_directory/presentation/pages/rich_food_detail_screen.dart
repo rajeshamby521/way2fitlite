@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food_directory/data/data_model/rich_food_detail_model.dart';
@@ -6,8 +8,8 @@ import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../../../common/general_widget.dart';
 
 class RichFoodDetailScreen extends StatefulWidget {
   final String foodId;
@@ -44,17 +46,30 @@ class _RichFoodDetailScreenState extends State<RichFoodDetailScreen> {
           richFoodDetailData = state.data;
 
           detailsData = [
-            rowData(label: servingSize, data: richFoodDetailData.data.serviceSize),
+            rowData(
+                label: servingSize, data: richFoodDetailData.data.serviceSize),
             rowData(label: calories, data: richFoodDetailData.data.calories),
-            rowData(label: "Total $fat", data: richFoodDetailData.data.totalFat),
-            rowData(label: saturatedFat, data: richFoodDetailData.data.saturatedFat),
-            rowData(label: polyUnsaturatedFat, data: richFoodDetailData.data.polyunsaturatedFat),
-            rowData(label: monoUnsaturatedFat, data: richFoodDetailData.data.monounsaturatedFat),
-            rowData(label: "Total $carbs", data: richFoodDetailData.data.totalCarbohydrate),
-            rowData(label: dietaryFiber, data: richFoodDetailData.data.dietaryFiber),
+            rowData(
+                label: "Total $fat", data: richFoodDetailData.data.totalFat),
+            rowData(
+                label: saturatedFat,
+                data: richFoodDetailData.data.saturatedFat),
+            rowData(
+                label: polyUnsaturatedFat,
+                data: richFoodDetailData.data.polyunsaturatedFat),
+            rowData(
+                label: monoUnsaturatedFat,
+                data: richFoodDetailData.data.monounsaturatedFat),
+            rowData(
+                label: "Total $carbs",
+                data: richFoodDetailData.data.totalCarbohydrate),
+            rowData(
+                label: dietaryFiber,
+                data: richFoodDetailData.data.dietaryFiber),
             rowData(label: sugar, data: richFoodDetailData.data.sugar),
             rowData(label: protein, data: richFoodDetailData.data.protein),
-            rowData(label: cholesterol, data: richFoodDetailData.data.cholesterol),
+            rowData(
+                label: cholesterol, data: richFoodDetailData.data.cholesterol),
             rowData(label: sodium, data: richFoodDetailData.data.sodium),
             rowData(label: potassium, data: richFoodDetailData.data.potassium),
           ];
@@ -107,6 +122,7 @@ class _RichFoodDetailScreenState extends State<RichFoodDetailScreen> {
                       children: detailsData,
                     ),
                   ),
+            verticalSpace(100),
           ],
         ),
       ),
@@ -145,6 +161,7 @@ class _RichFoodDetailScreenState extends State<RichFoodDetailScreen> {
                   children: detailsData,
                 ),
               ),
+        verticalSpace(50),
       ],
     );
   }

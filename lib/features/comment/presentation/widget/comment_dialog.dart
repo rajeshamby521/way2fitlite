@@ -1,4 +1,3 @@
-import 'package:facebook_audience_network/ad/ad_native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
@@ -6,7 +5,6 @@ import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:way2fitlife/common/general/buttons.dart';
-import 'package:way2fitlife/common/general/circular_progress_indicator.dart';
 import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/advertiesment/presentation/page/ad_manager.dart';
@@ -98,6 +96,7 @@ class _CommentDialogState extends State<CommentDialog> {
             ],
           ),
           Container(
+            height: 350,
             padding: EdgeInsets.all(10.0),
             margin: EdgeInsets.only(bottom: 20.0),
             decoration: BoxDecoration(
@@ -105,8 +104,12 @@ class _CommentDialogState extends State<CommentDialog> {
             ),
             child: NativeAdmob(
               adUnitID: AdManager.nativeAdUnitId,
+              error: Container(
+                height: 0,
+                width: 0,
+              ),
               // numberAds: 3,
-        /*      error: FacebookNativeAd(
+              /*      error: FacebookNativeAd(
                 placementId:
                     "IMG_16_9_APP_INSTALL#2312433698835503_2964952163583650",
 

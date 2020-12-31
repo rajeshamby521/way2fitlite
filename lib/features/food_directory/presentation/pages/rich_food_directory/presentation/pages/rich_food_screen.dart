@@ -8,6 +8,8 @@ import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food
 import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food_directory/presentation/widget/rich_food_widget.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 
+import '../../../../../../../common/general_widget.dart';
+
 class RichFoodScreen extends StatefulWidget {
   String foodType;
   String categoryId;
@@ -79,6 +81,7 @@ class _RichFoodScreenState extends State<RichFoodScreen> {
                       separatorBuilder: (context, index) =>
                           listDivider(padding: 10),
                     ),
+              bottomNavigationBar: verticalSpace(65),
             ),
           );
         },

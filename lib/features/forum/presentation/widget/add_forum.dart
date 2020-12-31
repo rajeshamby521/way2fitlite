@@ -126,6 +126,7 @@ class _AddForumState extends State<AddForum> {
           ],
         ),
         Container(
+          height: 300,
           padding: EdgeInsets.all(10.0),
           margin: EdgeInsets.only(bottom: 20.0),
           decoration: BoxDecoration(
@@ -133,28 +134,32 @@ class _AddForumState extends State<AddForum> {
           ),
           child: NativeAdmob(
             adUnitID: AdManager.nativeAdUnitId,
-            // numberAds: 3,
-            error: FacebookNativeAd(
-              placementId:
-                  "IMG_16_9_APP_INSTALL#2312433698835503_2964952163583650",
-
-              adType: NativeAdType.NATIVE_AD,
-              width: double.infinity,
-              backgroundColor: Colors.blue,
-              titleColor: Colors.white,
-              descriptionColor: Colors.white,
-              buttonColor: Colors.deepPurple,
-              buttonTitleColor: Colors.white,
-              buttonBorderColor: Colors.white,
-              keepAlive: true,
-              //set true if you do not want adview to refresh on widget rebuild
-              keepExpandedWhileLoading: false,
-              // set false if you want to collapse the native ad view when the ad is loading
-              expandAnimationDuraion: 300,
-              listener: (result, value) {
-                print("facebooko native add $result-->$value");
-              },
+            error: Container(
+              height: 0,
+              width: 0,
             ),
+            // numberAds: 3,
+            // error: FacebookNativeAd(
+            //   placementId:
+            //       "IMG_16_9_APP_INSTALL#2312433698835503_2964952163583650",
+            //
+            //   adType: NativeAdType.NATIVE_AD,
+            //   width: double.infinity,
+            //   backgroundColor: Colors.blue,
+            //   titleColor: Colors.white,
+            //   descriptionColor: Colors.white,
+            //   buttonColor: Colors.deepPurple,
+            //   buttonTitleColor: Colors.white,
+            //   buttonBorderColor: Colors.white,
+            //   keepAlive: true,
+            //   //set true if you do not want adview to refresh on widget rebuild
+            //   keepExpandedWhileLoading: false,
+            //   // set false if you want to collapse the native ad view when the ad is loading
+            //   expandAnimationDuraion: 300,
+            //   listener: (result, value) {
+            //     print("facebooko native add $result-->$value");
+            //   },
+            // ),
             controller: _controller,
             type: NativeAdmobType.full,
             options: NativeAdmobOptions(),

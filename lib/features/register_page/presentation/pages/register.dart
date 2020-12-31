@@ -117,7 +117,8 @@ class _RegisterState extends State<Register> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(image: assetsImage(bg_login), fit: BoxFit.cover)),
+                    image: DecorationImage(
+                        image: assetsImage(bg_login), fit: BoxFit.cover)),
               ),
               SingleChildScrollView(
                 child: Stack(
@@ -129,8 +130,10 @@ class _RegisterState extends State<Register> {
                         child: BlocListener<RegisterBloc, RegisterState>(
                           cubit: bloc,
                           listener: (context, state) {
-                            if (state is RegisterLodingBeginState) _saving = true;
-                            if (state is RegisterLodingEndState) _saving = false;
+                            if (state is RegisterLodingBeginState)
+                              _saving = true;
+                            if (state is RegisterLodingEndState)
+                              _saving = false;
                             if (state is RegisterInitState) {
                               unameMsg = state.unameMsg;
                               heightMsg = state.heightMsg;
@@ -153,8 +156,8 @@ class _RegisterState extends State<Register> {
                                 );
                                 return null;
                               } else {
-                                return Scaffold.of(context)
-                                    .showSnackBar(SnackBar(content: Text(state.model.msg)));
+                                return Scaffold.of(context).showSnackBar(
+                                    SnackBar(content: Text(state.model.msg)));
                               }
                             } else {
                               return Stack(
@@ -271,7 +274,8 @@ class _RegisterState extends State<Register> {
             left: 10,
             right: 10,
           ),
-          padding: const EdgeInsets.only(left: 10, top: 100, right: 10, bottom: 20),
+          padding:
+              const EdgeInsets.only(left: 10, top: 100, right: 10, bottom: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
             color: Colors.white,
@@ -382,7 +386,8 @@ class _RegisterState extends State<Register> {
               InkWell(
                 onTap: () => _selectDate(context),
                 child: FieldAndLabel(
-                  intialValue: DateFormat('dd-MM-yyyy').format(selectedDate.toLocal()),
+                  intialValue:
+                      DateFormat('dd-MM-yyyy').format(selectedDate.toLocal()),
                   icon: Image.asset(
                     ic_birthdate,
                     width: 28,
@@ -527,6 +532,7 @@ class _RegisterState extends State<Register> {
                     : () {},
           ),
         ),
+        verticalSpace(100),
       ],
     );
     var l = new List<Widget>();
@@ -652,7 +658,8 @@ class _RegisterState extends State<Register> {
 
   Future<File> _imgFromGallery() async {
     File _img;
-    final pickedFile = await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+    final pickedFile =
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
     setState(() {
       if (pickedFile != null)
         _img = File(pickedFile.path);
@@ -684,7 +691,10 @@ class _RegisterState extends State<Register> {
                       image = await _imgFromCamera();
                       Navigator.of(context).pop();
                     },
-                  )
+                  ),
+                  Container(
+                    height: 60,
+                  ),
                 ],
               ),
             ),

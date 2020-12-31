@@ -24,6 +24,8 @@ import 'package:way2fitlife/ui_helper/strings.dart';
 import 'package:way2fitlife/utils/app_preference.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
+import '../../../../common/general_widget.dart';
+
 class UpdateUserData extends StatefulWidget {
   @override
   _UpdateUserDataState createState() => _UpdateUserDataState();
@@ -445,6 +447,7 @@ class _UpdateUserDataState extends State<UpdateUserData> {
             },
           ),
         ),
+        verticalSpace(100),
       ],
     );
     var l = new List<Widget>();
@@ -623,7 +626,10 @@ class _UpdateUserDataState extends State<UpdateUserData> {
                       image = await _imgFromCamera();
                       Navigator.of(context).pop();
                     },
-                  )
+                  ),
+                  Container(
+                    height: 60,
+                  ),
                 ],
               ),
             ),
