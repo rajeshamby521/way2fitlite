@@ -4,9 +4,7 @@ import 'package:way2fitlife/features/comment/data/datamodel/forum_details_data_m
 import 'package:way2fitlife/features/comment/data/dataresourse/comment_data_resourse.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class CommentDataResourseIml extends CommentDataResourse {
+import 'package:way2fitlife/utils/app_preference_util.dart';class CommentDataResourseIml extends CommentDataResourse {
   ForumDetailDataModel forumDetailDataModel;
   AddCommnetModel addCommnetModel;
   Dio dio = Dio(options);
@@ -14,8 +12,8 @@ class CommentDataResourseIml extends CommentDataResourse {
   @override
   Future<ForumDetailDataModel> getForumDetails({String id}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[forum_id] = id ?? "";
 
@@ -30,10 +28,10 @@ class CommentDataResourseIml extends CommentDataResourse {
   @override
   Future<AddCommnetModel> addComment({String commnet}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
-    map[forum_id] = AppPreference.getString(forum_id);
+    map[forum_id] = AppPreferenceUtil().readString(forum_id);
     map[comment_text] = commnet ?? "";
 
     Response response =

@@ -4,8 +4,7 @@ import 'package:way2fitlife/features/weight_sheet/data/datamodel/weight_sheet_mo
 import 'package:way2fitlife/features/weight_sheet/data/datasource/weight_sheet_datasource.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-import 'package:intl/intl.dart';
+import 'package:way2fitlife/utils/app_preference_util.dart';import 'package:intl/intl.dart';
 
 class WeightSheetDataSourceImpl extends WeightSheetDataSource {
   Dio _dio = Dio(options);
@@ -21,8 +20,8 @@ class WeightSheetDataSourceImpl extends WeightSheetDataSource {
   @override
   Future<WeightSheetModel> getWeightSheetData({int offSet}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[offset] = offSet.toString();
 
@@ -41,8 +40,8 @@ class WeightSheetDataSourceImpl extends WeightSheetDataSource {
   @override
   Future<SetWeightDataModel> setWeightSheetData({String date, String weight}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[param_date] = date;
     map[param_weight] = weight;

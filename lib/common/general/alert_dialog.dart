@@ -2,8 +2,7 @@ import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/login/presentation/pages/login_screen.dart';
 import 'package:way2fitlife/features/logout/logout_api_alert.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-import 'package:flutter/material.dart';
+import 'package:way2fitlife/utils/app_preference_util.dart';import 'package:flutter/material.dart';
 
 noLoginAlertDialog(BuildContext context) {
   showDialog(

@@ -21,8 +21,7 @@ import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-import 'package:way2fitlife/utils/screen_utils.dart';
+import 'package:way2fitlife/utils/app_preference_util.dart';import 'package:way2fitlife/utils/screen_utils.dart';
 
 import '../../../../common/general_widget.dart';
 
@@ -76,7 +75,7 @@ class _UpdateUserDataState extends State<UpdateUserData> {
   @override
   void initState() {
     Data =
-        UserData.fromJson(json.decode(AppPreference.prefs.getString(userData)));
+        UserData.fromJson(json.decode(AppPreferenceUtil().readString(userData)));
     usernameController.text = Data.username;
     heightController.text = Data.height;
     weightController.text = Data.weight;

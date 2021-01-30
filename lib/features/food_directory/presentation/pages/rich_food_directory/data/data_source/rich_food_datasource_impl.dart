@@ -4,9 +4,7 @@ import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food
 import 'package:way2fitlife/features/food_directory/presentation/pages/rich_food_directory/data/data_source/rich_food_datasource.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class RichFoodDataSourceImpl extends RichFoodDataSource {
+import 'package:way2fitlife/utils/app_preference_util.dart';class RichFoodDataSourceImpl extends RichFoodDataSource {
   Dio _dio = Dio(options);
   RichFoodDataModel richFoodData;
   RichFoodDetailDataModel richFoodDetailData;
@@ -14,8 +12,8 @@ class RichFoodDataSourceImpl extends RichFoodDataSource {
   @override
   Future<RichFoodDataModel> fetchRichFoodData({String categoryId, String offSet}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[category_id] = categoryId;
     map[offSet] = offSet;
@@ -28,8 +26,8 @@ class RichFoodDataSourceImpl extends RichFoodDataSource {
   @override
   Future<RichFoodDetailDataModel> fetchRichFoodDetailData({String foodId}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[food_id] = foodId;
 

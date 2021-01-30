@@ -7,9 +7,7 @@ import 'package:way2fitlife/features/update_user_data/data/datamodel/change_pass
 import 'package:way2fitlife/features/update_user_data/data/dataresourse/update_user_data_resourse.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class UpdateUserDataResourseIml extends UpdateUserDataResourse {
+import 'package:way2fitlife/utils/app_preference_util.dart';class UpdateUserDataResourseIml extends UpdateUserDataResourse {
   LogInModel updatedDataModel;
   ChangePasswordDataModel changePasswordDataModel;
   Dio dio = Dio(options);
@@ -51,8 +49,8 @@ class UpdateUserDataResourseIml extends UpdateUserDataResourse {
     }
     map[lang] = "0";
     map[emailID] = registerDataModel.email ?? "";
-    map[user_id] = AppPreference.getString(user_id).toString();
-    map[access_token] = AppPreference.getString(access_token).toString();
+    map[user_id] = AppPreferenceUtil().readString(user_id).toString();
+    map[access_token] = AppPreferenceUtil().readString(access_token).toString();
 
     print("mapppp====>${map}");
     Response response =
@@ -60,9 +58,9 @@ class UpdateUserDataResourseIml extends UpdateUserDataResourse {
     print('response model---> ${response.data}');
     updatedDataModel = logInModelFromJson(response.data);
     if (updatedDataModel.flag == 1) {
-      AppPreference.set(userData, jsonEncode(response.data['data']));
-      AppPreference.set(user_id, updatedDataModel.data.userId.toString());
-      AppPreference.set(
+      AppPreferenceUtil().writeString(userData, jsonEncode(response.data['data']));
+      AppPreferenceUtil().writeString(user_id, updatedDataModel.data.userId.toString());
+      AppPreferenceUtil().writeString(
           access_token, updatedDataModel.data.accessToken.toString());
     }
     return updatedDataModel;
@@ -75,8 +73,8 @@ class UpdateUserDataResourseIml extends UpdateUserDataResourse {
     map[current_password] = c_pass ?? "";
     map[new_password] = n_pass ?? "";
     map[lang] = "0";
-    map[user_id] = AppPreference.getString(user_id).toString();
-    map[access_token] = AppPreference.getString(access_token).toString();
+    map[user_id] = AppPreferenceUtil().readString(user_id).toString();
+    map[access_token] = AppPreferenceUtil().readString(access_token).toString();
     print('map-->$map');
     Response response =
         await dio.post(ChangePasswordURL, data: FormData.fromMap(map));

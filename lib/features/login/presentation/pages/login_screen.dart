@@ -38,7 +38,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Future<void> initState() {
-    MyConnectivity.checkInternet(context);
+    // MyConnectivity.checkInternet(context);
     super.initState();
   }
 

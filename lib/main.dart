@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:way2fitlife/di/dependency_injection.dart';
 import 'package:way2fitlife/features/dashboard/presentation/pages/dashboard_screen.dart';
 import 'package:way2fitlife/features/drawer/presentation/pages/drawer_screen.dart';
@@ -19,20 +21,25 @@ import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/images.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
+import 'package:way2fitlife/utils/app_preference_util.dart';
+import 'package:way2fitlife/utils/app_preference_util.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
 import 'features/advertiesment/presentation/page/ad_manager.dart';
 import 'features/drawer/presentation/bloc/bloc.dart';
 
 Future<String> _getToken() async {
-  var deviceInfo = DeviceInfoPlugin();
-  if (Platform.isIOS) {
-    var iosDeviceInfo = await deviceInfo.iosInfo;
-    return iosDeviceInfo.identifierForVendor;
+  if (kIsWeb) {
+    return "1234";
   } else {
-    var androidDeviceInfo = await deviceInfo.androidInfo;
-    return androidDeviceInfo.androidId;
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor;
+    } else {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId;
+    }
   }
 }
 
@@ -44,7 +51,7 @@ bool isInterstitialReady = false;
 bool isBannerReady = false;
 
 Future<void> initAdMob() {
-  FirebaseAdMob.instance.initialize(appId: AdManager.appId);
+  // FirebaseAdMob.instance.initialize(appId: AdManager.appId);
   // RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("2A7D8394FB6369ED56FE41B58EEBC898")
 }
 
@@ -53,11 +60,12 @@ setUpAll() async {
   await Firebase.initializeApp();
   initGetServiceLocator();
   initAdMob();
-  AppPreference.init();
+  var pref = await SharedPreferences.getInstance();
+  AppPreferenceUtil(pref: pref);
 
   String deviceToken = await _getToken();
-  AppPreference.set(device_token, deviceToken);
-  userId = AppPreference.getString(user_id);
+  AppPreferenceUtil().writeString(device_token, deviceToken);
+  userId = AppPreferenceUtil().readString(user_id);
 }
 
 Future<void> main() async {
@@ -68,7 +76,7 @@ Future<void> main() async {
       debugShowCheckedModeBanner: false,
       title: way2fitlife,
       theme: ThemeData(cursorColor: theme, primaryColor: theme),
-      home: userId == null ? LogInScreen() : MyApp(),
+      home: userId.isEmpty ? LogInScreen() : MyApp(),
     ),
   );
 }
@@ -113,16 +121,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    MyConnectivity.checkInternet(context);
-    if (AppPreference.getString(userData) != null) {
-      userDetails =
-          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+    // MyConnectivity.checkInternet(context);
+    if (AppPreferenceUtil().readString(userData).isEmpty) {
+      userDetails = UserData.fromJson(jsonDecode(AppPreferenceUtil().readString(userData)));
     }
-    initBannerAd();
-    loadBannerAd();
+    // initBannerAd();
+    // loadBannerAd();
 
-    _initInterAd();
-    _loadInterstitialAd();
+    // _initInterAd();
+    // _loadInterstitialAd();
 
     super.initState();
   }
@@ -176,10 +183,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onBannerAdEvent(MobileAdEvent event) {
-
     switch (event) {
       case MobileAdEvent.loaded:
-        if(!isBannerReady)bloc.add(ShowAdEvent());
+        if (!isBannerReady) bloc.add(ShowAdEvent());
         isBannerReady = true;
         print("BannerAd Loaded");
         break;
@@ -191,8 +197,6 @@ class _MyAppState extends State<MyApp> {
       //do nothing
     }
   }
-
-
 
   @override
   void dispose() {
@@ -208,9 +212,8 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
 
-    if (AppPreference.getString(userData) != null) {
-      userDetails =
-          UserData.fromJson(jsonDecode(AppPreference.getString(userData)));
+    if (AppPreferenceUtil().readString(userData) != null) {
+      userDetails = UserData.fromJson(jsonDecode(AppPreferenceUtil().readString(userData)));
     }
     // bloc.add(FetchSelectPageEvent(pageNo: 0));
     return WillPopScope(
@@ -227,8 +230,11 @@ class _MyAppState extends State<MyApp> {
                 isLoading = false;
               } else if (state is FetchSelectPageState) {
                 page = state.pageNo;
-              } else if(state is ShowAdState){
-               if(isBannerReady) _bannerAd.show(anchorType: AnchorType.bottom,);
+              } else if (state is ShowAdState) {
+                if (isBannerReady)
+                  _bannerAd.show(
+                    anchorType: AnchorType.bottom,
+                  );
               }
             },
             child: BlocBuilder(
@@ -239,19 +245,18 @@ class _MyAppState extends State<MyApp> {
                   height: Scr.infinite,
                   width: Scr.infinite,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage(bg_login,
-                      )
-                    )
-                  ),
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage(
+                            bg_login,
+                          ))),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
                         child: Stack(
                           children: [
-                           /* Container(
+                            /* Container(
                               child: logoImage(
                                 image: bg_login,
                                 height: Scr.infinite,
@@ -263,7 +268,11 @@ class _MyAppState extends State<MyApp> {
                           ],
                         ),
                       ),
-                      if(isBannerReady)Container(height: 50,color: transparent,),
+                      if (isBannerReady)
+                        Container(
+                          height: 50,
+                          color: transparent,
+                        ),
                     ],
                   ),
                 );

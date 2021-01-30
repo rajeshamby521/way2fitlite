@@ -11,7 +11,7 @@ import 'package:way2fitlife/features/update_user_data/presentation/bloc/change_p
 import 'package:way2fitlife/network/api_strings.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
+import 'package:way2fitlife/utils/app_preference_util.dart';
 import 'package:way2fitlife/utils/screen_utils.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -63,8 +63,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           cubit: bloc,
           listener: (context, state) {
             if (state is ChangePasswordErrorState) {
-              Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.msg)));
+              Scaffold.of(context).showSnackBar(SnackBar(content: Text(state.msg)));
             } else if (state is ChangePasswordBtnState) {
               btnStatus = state.status;
               c_passMsg = state.c_passMsg;
@@ -72,8 +71,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               conf_passMsg = state.conf_pass;
             } else if (state is ChangePasswordCompleteState) {
               if (state.model.flag == 1) {
-                AppPreference.prefs
-                    .setString(access_token, state.model.accessToken);
+                AppPreferenceUtil().writeString(access_token, state.model.accessToken);
                 Fluttertoast.showToast(msg: state.model.msg);
                 //AppPreference.clear();
                 logOut(context);

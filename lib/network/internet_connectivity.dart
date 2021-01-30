@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/foundation.dart';
 import 'package:way2fitlife/common/general/alert_dialog.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
 
@@ -42,27 +43,31 @@ class MyConnectivity {
 
   void disposeStream() => controller.close();
 
-  static String internetStatus = "";
+  static String internetStatus = internet_connected;
 
   static checkInternet(context) async {
-    MyConnectivity _connectivity = MyConnectivity.instance;
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) async {
-      switch (source.keys.toList()[0]) {
-        case ConnectivityResult.none:
-          print(" * * * * * * * * Offline");
-          await internetAlertDialog(context);
-          internetStatus = no_internet;
-          break;
-        case ConnectivityResult.mobile:
-          print(" * * * * * * * * Mobile: Online");
-          internetStatus = internet_connected;
-          break;
-        case ConnectivityResult.wifi:
-          print(" * * * * * * * * WiFi: Online");
-          internetStatus = internet_connected;
-          break;
-      }
-    });
+    if (kIsWeb) {
+      internetStatus = "internet_connected";
+    } else {
+      MyConnectivity _connectivity = MyConnectivity.instance;
+      _connectivity.initialise();
+      _connectivity.myStream.listen((source) async {
+        switch (source.keys.toList()[0]) {
+          case ConnectivityResult.none:
+            print(" * * * * * * * * Offline");
+            await internetAlertDialog(context);
+            internetStatus = no_internet;
+            break;
+          case ConnectivityResult.mobile:
+            print(" * * * * * * * * Mobile: Online");
+            internetStatus = internet_connected;
+            break;
+          case ConnectivityResult.wifi:
+            print(" * * * * * * * * WiFi: Online");
+            internetStatus = internet_connected;
+            break;
+        }
+      });
+    }
   }
 }

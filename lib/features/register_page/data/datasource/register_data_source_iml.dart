@@ -6,9 +6,7 @@ import 'package:way2fitlife/features/register_page/data/datamodel/register_data_
 import 'package:way2fitlife/features/register_page/data/datasource/register_data_source.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class RegisterDataSourceiml extends RegisterDataSource {
+import 'package:way2fitlife/utils/app_preference_util.dart';class RegisterDataSourceiml extends RegisterDataSource {
   RegisterDataModel dataModel;
   LogInModel responseDataModel;
   Dio dio = Dio(options);
@@ -65,9 +63,9 @@ class RegisterDataSourceiml extends RegisterDataSource {
     responseDataModel = logInModelFromJson((response.data));
 
     if (responseDataModel.flag == 1) {
-      AppPreference.set(userData, jsonEncode(response.data['data']));
-      AppPreference.set(user_id, responseDataModel.data.userId);
-      AppPreference.set(access_token, responseDataModel.data.accessToken);
+      AppPreferenceUtil().writeString(userData, jsonEncode(response.data['data']));
+      AppPreferenceUtil().writeString(user_id, responseDataModel.data.userId);
+      AppPreferenceUtil().writeString(access_token, responseDataModel.data.accessToken);
     }
 
     return responseDataModel;

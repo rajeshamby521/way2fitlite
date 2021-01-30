@@ -6,9 +6,7 @@ import 'package:way2fitlife/features/photo_gallery/data/dataModel/set_photo_gall
 import 'package:way2fitlife/features/photo_gallery/data/dataSource/photo_gallery_datasource.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class PhotoGalleryDataSourceImpl extends PhotoGalleryDataSource {
+import 'package:way2fitlife/utils/app_preference_util.dart';class PhotoGalleryDataSourceImpl extends PhotoGalleryDataSource {
   PhotoGalleryModel data;
   SetPhotoGalleryDataModel setData;
   Dio _dio = Dio(options);
@@ -25,8 +23,8 @@ class PhotoGalleryDataSourceImpl extends PhotoGalleryDataSource {
   @override
   Future<PhotoGalleryModel> getPhotoGalleryData({int offSet}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[offset] = offSet.toString();
 
@@ -39,8 +37,8 @@ class PhotoGalleryDataSourceImpl extends PhotoGalleryDataSource {
   Future<SetPhotoGalleryDataModel> setPhotoGalleryData(
       {File image, String date, String weight}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[param_date] = date;
     map[param_weight] = weight;

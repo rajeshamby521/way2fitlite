@@ -12,8 +12,7 @@ import 'package:way2fitlife/network/internet_connectivity.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
 import 'package:way2fitlife/ui_helper/icons.dart';
 import 'package:way2fitlife/ui_helper/strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-import 'package:way2fitlife/utils/screen_utils.dart';
+import 'package:way2fitlife/utils/app_preference_util.dart';import 'package:way2fitlife/utils/screen_utils.dart';
 
 class DrawerList extends StatefulWidget {
   final Bloc bloc;
@@ -34,7 +33,7 @@ class _DrawerListState extends State<DrawerList> {
   }
 
   void getid() {
-    userId = AppPreference.getString(user_id);
+    userId = AppPreferenceUtil().readString(user_id);
     print("user id--->${userId}");
   }
 

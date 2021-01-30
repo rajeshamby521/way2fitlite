@@ -6,9 +6,7 @@ import 'package:way2fitlife/features/compare/data/dataModel/set_compare_data_mod
 import 'package:way2fitlife/features/compare/data/dataSource/compare_datasource.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class CompareDataSourceImpl extends CompareDataSource {
+import 'package:way2fitlife/utils/app_preference_util.dart';class CompareDataSourceImpl extends CompareDataSource {
   ComparePhotoDataModel data;
   SetComparePhotoDataModel setData;
   Dio _dio = Dio(options);
@@ -16,8 +14,8 @@ class CompareDataSourceImpl extends CompareDataSource {
   @override
   Future<ComparePhotoDataModel> getComparePhotoData({int offSet}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[offset] = offSet.toString();
 
@@ -50,8 +48,8 @@ class CompareDataSourceImpl extends CompareDataSource {
     String afterDate,
   }) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[before_weight] = beforeWeight;
     map[after_weight] = afterWeight;

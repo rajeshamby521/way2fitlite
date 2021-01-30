@@ -4,9 +4,7 @@ import 'package:way2fitlife/features/forum/data/datamodel/forum_data_model.dart'
 import 'package:way2fitlife/features/forum/data/dataresourse/forum_data_resourse.dart';
 import 'package:way2fitlife/network/api_provider.dart';
 import 'package:way2fitlife/network/api_strings.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class ForumDataResouseIml extends ForumDataResourse {
+import 'package:way2fitlife/utils/app_preference_util.dart';class ForumDataResouseIml extends ForumDataResourse {
   Dio dio = Dio(options);
   ForumDataModel forumDataModel;
   AddForumDataModel addForumDataModel;
@@ -14,8 +12,8 @@ class ForumDataResouseIml extends ForumDataResourse {
   @override
   Future<ForumDataModel> getData({int offSet}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[offset] = offSet.toString();
 
@@ -31,8 +29,8 @@ class ForumDataResouseIml extends ForumDataResourse {
   Future<AddForumDataModel> addForumData(
       {String topic, String title, String desc}) async {
     Map<String, dynamic> map = Map();
-    map[user_id] = AppPreference.getString(user_id);
-    map[access_token] = AppPreference.getString(access_token);
+    map[user_id] = AppPreferenceUtil().readString(user_id);
+    map[access_token] = AppPreferenceUtil().readString(access_token);
     map[lang] = "0";
     map[forum_topic] = topic ?? " ";
     map[forum_title] = title ?? " ";

@@ -3,9 +3,7 @@ import 'package:way2fitlife/common/general_widget.dart';
 import 'package:way2fitlife/features/comment/presentation/page/comment_screen.dart';
 import 'package:way2fitlife/network/api_strings.dart';
 import 'package:way2fitlife/ui_helper/colors.dart';
-import 'package:way2fitlife/utils/app_preference.dart';
-
-class listItem extends StatelessWidget {
+import 'package:way2fitlife/utils/app_preference_util.dart';class listItem extends StatelessWidget {
   String title;
   String subtitle;
   String id;
@@ -39,7 +37,7 @@ class listItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        AppPreference.set(forum_id, id);
+        AppPreferenceUtil().writeString(forum_id, id);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => CommentScreen(
             forum_id: id,
