@@ -5,7 +5,7 @@ Color lightTheme = Color.fromRGBO(12, 53, 90, 0.5);
 Color veryLightTheme = Color.fromRGBO(12, 53, 90, 0.2);
 
 // Color gradientStart = Color.fromRGBO(58, 131, 120, 0.5); //76FF00
-Color gradientStart = Color(0xff76FF00); //76FF00
+Color gradientStart = Color(0xff76FFF1); //76FF00
 // Color gradientStartDark = Color.fromRGBO(58, 131, 120, 1);
 // Color gradientEnd = Color.fromRGBO(211, 216, 98, 1);
 Color gradientEnd = Color(0xff00AF65);
