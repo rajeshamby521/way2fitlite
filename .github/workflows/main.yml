@@ -2,7 +2,7 @@ name: Flutter Web
 on:
   push:
     branches:
-      - developer
+      - development
 jobs:
   build:
     name: Build Web
