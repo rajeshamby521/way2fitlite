@@ -210,6 +210,10 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
+
+
+
+
     ]);
 
     if (AppPreferenceUtil().readString(userData) != null) {
