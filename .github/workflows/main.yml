@@ -20,15 +20,18 @@ jobs:
       - run: |
           cd build/web
           git init
-          # type configurations: your user.email and user.name followed lines 
-          # git config --global user.email rajesh.amby521@gmail.com 
-          # git config --global user.name rajesh 
+
           git config --global user.email rajesh.amby521@gmail.com
           git config --global user.name rajesh
+
           git status
+
           # change this remote url for examle your remote url is https://github.com/rajeshamby521/way2fitlite.github.io.git then the following:
           git remote add origin https://${{secrets.commit_secret}}@github.com/rajeshamby521/way2fitlite.github.io.git
-          git checkout -b gh-pages
+         # git checkout -b gh-pages
+          git branch -m gh-pages
+          git config --global init.defaultBranch gh-pages
+
           ls
           git add --all
           ls
