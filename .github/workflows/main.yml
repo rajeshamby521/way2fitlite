@@ -29,6 +29,9 @@ jobs:
           # change this remote url for examle your remote url is https://github.com/rajeshamby521/way2fitlite.github.io.git then the following:
           git remote add origin https://${{secrets.commit_secret}}@github.com/rajeshamby521/way2fitlite.github.io.git
           git checkout -b gh-pages
+          ls
           git add --all
+          ls
           git commit -m "update"
-          git push origin gh-pages -f
+          ls
+          git push origin gh-pages -ff
