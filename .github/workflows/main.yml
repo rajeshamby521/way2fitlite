@@ -7,7 +7,7 @@ jobs:
   build:
     name: Build Web
     env:
-      my_secret: ${{secrets.commit_secret}}
+      my_secret: ${{secrets.COMMIT_SECRET}}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
@@ -27,7 +27,7 @@ jobs:
           git status
 
           # change this remote url for examle your remote url is https://github.com/rajeshamby521/way2fitlite.git then the following:
-          git remote add origin https://${{secrets.commit_secret}}@github.com/rajeshamby521/way2fitlite.git
+          git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/rajeshamby521/way2fitlite.git
           git checkout -b gh-pages
           git add --all
           git commit -m "update"
