@@ -7,7 +7,7 @@ jobs:
   build:
     name: Build Web
     env:
-      my_secret: ${{secrets.commit_secret}}
+      my_secret: ${{secrets.way2fitlife}}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
